@@ -21,6 +21,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.plantrack_android.model.Plant
+import com.example.plantrack_android.ui.manageplants.AddPlantButton
 import com.example.plantrack_android.ui.manageplants.ManagePlantsScreen
 import com.example.plantrack_android.ui.theme.PlanTrackAndroidTheme
 import java.util.*
@@ -72,10 +73,25 @@ class MainActivity : ComponentActivity() {
     @Composable
     fun PlantTrackApp() {
         val navController = rememberNavController()
+        val backstackEntry = navController.currentBackStackEntryAsState()
 
         PlanTrackAndroidTheme {
             Surface(color = MaterialTheme.colors.background) {
-                PlantNavHost(navController)
+                Scaffold(
+                    topBar = {/* TODO */ },
+                    drawerContent = {/* TODO */ },
+                    bottomBar = {/* TODO */ },
+                    floatingActionButton = {
+                        when (backstackEntry.value?.destination?.route) {
+                            "manageplants" -> {
+                                AddPlantButton()
+                            }
+                        }
+                    },
+                    snackbarHost = {/* TODO */ },
+                ) {
+                    PlantNavHost(navController)
+                }
             }
         }
     }

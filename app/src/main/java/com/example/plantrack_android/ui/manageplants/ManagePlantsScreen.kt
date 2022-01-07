@@ -25,16 +25,7 @@ import java.util.*
 @ExperimentalFoundationApi
 @Composable
 fun ManagePlantsScreen(plants: List<Plant>) {
-    Scaffold(
-        topBar = {/* TODO */ },
-        drawerContent = {/* TODO */ },
-        bottomBar = {/* TODO */ },
-        floatingActionButton = { AddPlantButton() },
-        snackbarHost = {/* TODO */ },
-        content = {
-            PlantCardGrid(plants = plants)
-        }
-    )
+    PlantCardGrid(plants = plants)
 }
 
 @ExperimentalMaterialApi
