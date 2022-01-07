@@ -7,12 +7,12 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyVerticalGrid
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.OutlinedButton
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.plantrack_android.model.Plant
@@ -58,11 +58,26 @@ class MainActivity : ComponentActivity() {
         setContent {
             PlanTrackAndroidTheme {
                 Surface(color = MaterialTheme.colors.background) {
-                    PlantCardGrid(plants = plantList)
+                    ManagePlantsScreen(plants = plantList)
                 }
             }
         }
     }
+}
+
+@ExperimentalFoundationApi
+@Composable
+fun ManagePlantsScreen(plants: List<Plant>) {
+    Scaffold(
+        topBar = {/* TODO */},
+        drawerContent = {/* TODO */},
+        bottomBar = {/* TODO */},
+        floatingActionButton = { AddPlantButton()},
+        snackbarHost = {/* TODO */},
+        content = {
+            PlantCardGrid(plants = plants)
+        }
+    )
 }
 
 @ExperimentalFoundationApi
@@ -102,6 +117,23 @@ private fun PlantCard(plant: Plant) {
             }
         }
     }
+}
+
+@Composable
+fun AddPlantButton() {
+    ExtendedFloatingActionButton(
+        text = { Text("Add plant") },
+        onClick = { /*TODO*/ },
+        icon = {
+            Icon(
+                Icons.Filled.Add, "Add new plant", tint = Color.White
+            )
+        },
+        elevation = FloatingActionButtonDefaults.elevation(8.dp),
+        backgroundColor = Color.Green,
+        contentColor = Color.White,
+        modifier = Modifier.padding(16.dp)
+    )
 }
 
 @ExperimentalFoundationApi
