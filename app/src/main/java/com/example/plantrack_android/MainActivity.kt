@@ -4,24 +4,17 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.GridCells
-import androidx.compose.foundation.lazy.LazyVerticalGrid
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.plantrack_android.model.Plant
-import com.example.plantrack_android.ui.manageplants.AddPlantButton
+import com.example.plantrack_android.ui.addplant.AddPlantButton
+import com.example.plantrack_android.ui.addplant.AddPlantScreen
 import com.example.plantrack_android.ui.manageplants.ManagePlantsScreen
 import com.example.plantrack_android.ui.theme.PlanTrackAndroidTheme
 import java.util.*
@@ -78,17 +71,17 @@ class MainActivity : ComponentActivity() {
         PlanTrackAndroidTheme {
             Surface(color = MaterialTheme.colors.background) {
                 Scaffold(
-                    topBar = {/* TODO */ },
-                    drawerContent = {/* TODO */ },
-                    bottomBar = {/* TODO */ },
+//                    topBar = {/* TODO */ },
+//                    drawerContent = {/* TODO */ },
+//                    bottomBar = {/* TODO */ },
                     floatingActionButton = {
                         when (backstackEntry.value?.destination?.route) {
                             "manageplants" -> {
-                                AddPlantButton()
+                                AddPlantButton(navController)
                             }
                         }
                     },
-                    snackbarHost = {/* TODO */ },
+//                    snackbarHost = {/* TODO */ },
                 ) {
                     PlantNavHost(navController)
                 }
@@ -107,6 +100,9 @@ class MainActivity : ComponentActivity() {
         ) {
             composable("manageplants") {
                 ManagePlantsScreen(plants = plantList)
+            }
+            composable("addplant") {
+                AddPlantScreen()
             }
         }
     }

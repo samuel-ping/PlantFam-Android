@@ -63,23 +63,6 @@ private fun PlantCard(plant: Plant) {
     }
 }
 
-@Composable
-fun AddPlantButton() {
-    ExtendedFloatingActionButton(
-        text = { Text("Add plant") },
-        onClick = { /*TODO*/ },
-        icon = {
-            Icon(
-                Icons.Filled.Add, "Add new plant", tint = Color.White
-            )
-        },
-        elevation = FloatingActionButtonDefaults.elevation(8.dp),
-        backgroundColor = Color.Green,
-        contentColor = Color.White,
-        modifier = Modifier.padding(16.dp)
-    )
-}
-
 @ExperimentalMaterialApi
 @ExperimentalFoundationApi
 @Preview(showBackground = true)
