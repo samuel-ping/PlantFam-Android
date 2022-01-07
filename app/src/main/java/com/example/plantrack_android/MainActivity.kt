@@ -15,131 +15,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
 import com.example.plantrack_android.model.Plant
+import com.example.plantrack_android.ui.manageplants.ManagePlantsScreen
 import com.example.plantrack_android.ui.theme.PlanTrackAndroidTheme
 import java.util.*
 
 class MainActivity : ComponentActivity() {
-    @ExperimentalMaterialApi
-    @ExperimentalFoundationApi
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        // TODO: Hardcoded data, delete when possible
-        val plantList = listOf(
-            Plant(
-                "Shrimp",
-                "Echeveria fleur blanc",
-                "Echeveria fleur blanc",
-                GregorianCalendar(2019 + 1900, 7, 27),
-                "Home Depot",
-                false,
-                null
-            ),
-            Plant(
-                "Butler",
-                "Echeveria cubic frost",
-                "Echeveria cubic frost",
-                GregorianCalendar(2020 + 1900, 10, 28),
-                "Gift",
-                false,
-                null
-            ),
-            Plant(
-                "Three Musketeers",
-                "Burros tails",
-                "Sedum morganianum",
-                GregorianCalendar(2021 + 1900, 1, 24),
-                "Gift",
-                false,
-                null
-            )
-        )
-
-        setContent {
-            PlanTrackAndroidTheme {
-                Surface(color = MaterialTheme.colors.background) {
-                    ManagePlantsScreen(plants = plantList)
-                }
-            }
-        }
-    }
-}
-
-@ExperimentalMaterialApi
-@ExperimentalFoundationApi
-@Composable
-fun ManagePlantsScreen(plants: List<Plant>) {
-    Scaffold(
-        topBar = {/* TODO */},
-        drawerContent = {/* TODO */},
-        bottomBar = {/* TODO */},
-        floatingActionButton = { AddPlantButton()},
-        snackbarHost = {/* TODO */},
-        content = {
-            PlantCardGrid(plants = plants)
-        }
-    )
-}
-
-@ExperimentalMaterialApi
-@ExperimentalFoundationApi
-@Composable
-private fun PlantCardGrid(plants: List<Plant>) {
-    LazyVerticalGrid(
-        cells = GridCells.Fixed(count = 2),
-        contentPadding = PaddingValues(8.dp)
-    ) {
-        items(plants.size) { plant ->
-            PlantCard(plants[plant]) // TODO: This seems wrong?
-        }
-    }
-}
-
-@ExperimentalMaterialApi
-@Composable
-private fun PlantCard(plant: Plant) {
-    Card(onClick = { /*TODO*/ }, elevation = 6.dp) {
-        PlanTrackAndroidTheme {
-            Column(modifier = Modifier.padding(24.dp)) {
-                with(plant) {
-                    Text(
-                        text = nickname,
-                        color = MaterialTheme.colors.secondaryVariant,
-                        style = MaterialTheme.typography.h5
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(text = "the $commonName.", style = MaterialTheme.typography.subtitle1)
-                }
-
-            }
-        }
-    }
-}
-
-@Composable
-fun AddPlantButton() {
-    ExtendedFloatingActionButton(
-        text = { Text("Add plant") },
-        onClick = { /*TODO*/ },
-        icon = {
-            Icon(
-                Icons.Filled.Add, "Add new plant", tint = Color.White
-            )
-        },
-        elevation = FloatingActionButtonDefaults.elevation(8.dp),
-        backgroundColor = Color.Green,
-        contentColor = Color.White,
-        modifier = Modifier.padding(16.dp)
-    )
-}
-
-@ExperimentalMaterialApi
-@ExperimentalFoundationApi
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    val plantList = listOf(
+    // TODO: Hardcoded data, delete when possible
+    private val plantList = listOf(
         Plant(
             "Shrimp",
             "Echeveria fleur blanc",
@@ -169,7 +57,41 @@ fun DefaultPreview() {
         )
     )
 
-    PlanTrackAndroidTheme {
-        PlantCardGrid(plants = plantList)
+    @ExperimentalMaterialApi
+    @ExperimentalFoundationApi
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        setContent {
+            PlantTrackApp()
+        }
+    }
+
+    @ExperimentalFoundationApi
+    @ExperimentalMaterialApi
+    @Composable
+    fun PlantTrackApp() {
+        val navController = rememberNavController()
+
+        PlanTrackAndroidTheme {
+            Surface(color = MaterialTheme.colors.background) {
+                PlantNavHost(navController)
+            }
+        }
+    }
+
+    @ExperimentalFoundationApi
+    @ExperimentalMaterialApi
+    @Composable
+    fun PlantNavHost(navController: NavHostController, modifier: Modifier = Modifier) {
+        NavHost(
+            navController = navController,
+            startDestination = "manageplants",
+            modifier = modifier
+        ) {
+            composable("manageplants") {
+                ManagePlantsScreen(plants = plantList)
+            }
+        }
     }
 }
