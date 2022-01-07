@@ -25,9 +25,34 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         // TODO: Hardcoded data, delete when possible
-        val plantList = listOf<Plant>(
-            Plant("Shrimp", "Echeveria fleur blanc", Date(2019, 8, 27)),
-            Plant("Butler", "Echeveria cubic frost", Date(2020, 11, 28))
+        val plantList = listOf(
+            Plant(
+                "Shrimp",
+                "Echeveria fleur blanc",
+                "Echeveria fleur blanc",
+                Date(2019, 8, 27),
+                "Home Depot",
+                false,
+                null
+            ),
+            Plant(
+                "Butler",
+                "Echeveria cubic frost",
+                "Echeveria cubic frost",
+                Date(2020, 11, 28),
+                "Gift",
+                false,
+                null
+            ),
+            Plant(
+                "Three Musketeers",
+                "Burros tails",
+                "Sedum morganianum",
+                Date(2021, 2, 24),
+                "Gift",
+                false,
+                null
+            )
         )
 
         setContent {
@@ -44,7 +69,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 private fun PlantCardGrid(plants: List<Plant>) {
     LazyVerticalGrid(
-        cells = GridCells.Fixed(count = 3),
+        cells = GridCells.Fixed(count = 2),
         contentPadding = PaddingValues(8.dp)
     ) {
         items(plants.size) { plant ->
@@ -83,9 +108,34 @@ private fun PlantCard(plant: Plant) {
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
-    val plantList = listOf<Plant>(
-        Plant("Shrimp", "Echeveria fleur blanc", Date(2019, 8, 27)),
-        Plant("Butler", "Echeveria cubic frost", Date(2020, 11, 28))
+    val plantList = listOf(
+        Plant(
+            "Shrimp",
+            "Echeveria fleur blanc",
+            "Echeveria fleur blanc",
+            Date(2019, 8, 27),
+            "Home Depot",
+            false,
+            null
+        ),
+        Plant(
+            "Butler",
+            "Echeveria cubic frost",
+            "Echeveria cubic frost",
+            Date(2020, 11, 28),
+            "Gift",
+            false,
+            null
+        ),
+        Plant(
+            "Three Musketeers",
+            "Burros tails",
+            "Sedum morganianum",
+            Date(2021, 2, 24),
+            "Gift",
+            false,
+            null
+        )
     )
 
     PlanTrackAndroidTheme {
