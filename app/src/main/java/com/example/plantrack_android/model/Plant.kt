@@ -6,7 +6,7 @@ data class Plant (
     val nickname: String,
     val commonName: String,
     val scientificName: String,
-    val adoptionDate: Date,
+    val adoptionDate: Calendar,
     val adoptedFrom: String,
     val isDeceased: Boolean,
     val parent: Plant?,

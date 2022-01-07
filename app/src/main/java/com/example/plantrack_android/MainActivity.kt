@@ -30,7 +30,7 @@ class MainActivity : ComponentActivity() {
                 "Shrimp",
                 "Echeveria fleur blanc",
                 "Echeveria fleur blanc",
-                Date(2019, 8, 27),
+                GregorianCalendar(2019 + 1900, 7, 27),
                 "Home Depot",
                 false,
                 null
@@ -39,7 +39,7 @@ class MainActivity : ComponentActivity() {
                 "Butler",
                 "Echeveria cubic frost",
                 "Echeveria cubic frost",
-                Date(2020, 11, 28),
+                GregorianCalendar(2020 + 1900, 10, 28),
                 "Gift",
                 false,
                 null
@@ -48,7 +48,7 @@ class MainActivity : ComponentActivity() {
                 "Three Musketeers",
                 "Burros tails",
                 "Sedum morganianum",
-                Date(2021, 2, 24),
+                GregorianCalendar(2021 + 1900, 1, 24),
                 "Gift",
                 false,
                 null
@@ -145,7 +145,7 @@ fun DefaultPreview() {
             "Shrimp",
             "Echeveria fleur blanc",
             "Echeveria fleur blanc",
-            Date(2019, 8, 27),
+            GregorianCalendar(2019 + 1900, 7, 27),
             "Home Depot",
             false,
             null
@@ -154,7 +154,7 @@ fun DefaultPreview() {
             "Butler",
             "Echeveria cubic frost",
             "Echeveria cubic frost",
-            Date(2020, 11, 28),
+            GregorianCalendar(2020 + 1900, 10, 28),
             "Gift",
             false,
             null
@@ -163,7 +163,7 @@ fun DefaultPreview() {
             "Three Musketeers",
             "Burros tails",
             "Sedum morganianum",
-            Date(2021, 2, 24),
+            GregorianCalendar(2021 + 1900, 1, 24),
             "Gift",
             false,
             null
