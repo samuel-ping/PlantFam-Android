@@ -20,6 +20,7 @@ import com.example.plantrack_android.ui.theme.PlanTrackAndroidTheme
 import java.util.*
 
 class MainActivity : ComponentActivity() {
+    @ExperimentalMaterialApi
     @ExperimentalFoundationApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,6 +66,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+@ExperimentalMaterialApi
 @ExperimentalFoundationApi
 @Composable
 fun ManagePlantsScreen(plants: List<Plant>) {
@@ -80,6 +82,7 @@ fun ManagePlantsScreen(plants: List<Plant>) {
     )
 }
 
+@ExperimentalMaterialApi
 @ExperimentalFoundationApi
 @Composable
 private fun PlantCardGrid(plants: List<Plant>) {
@@ -93,27 +96,22 @@ private fun PlantCardGrid(plants: List<Plant>) {
     }
 }
 
+@ExperimentalMaterialApi
 @Composable
 private fun PlantCard(plant: Plant) {
-    Surface(
-        color = MaterialTheme.colors.secondaryVariant,
-        modifier = Modifier.padding(vertical = 4.dp, horizontal = 8.dp)
-    ) {
+    Card(onClick = { /*TODO*/ }, elevation = 6.dp) {
         PlanTrackAndroidTheme {
             Column(modifier = Modifier.padding(24.dp)) {
-                Text(
-                    text = "${plant.nickname}",
-                    color = MaterialTheme.colors.secondaryVariant,
-                    style = MaterialTheme.typography.h5
-                )
-                Spacer(modifier = Modifier.width(8.dp))
-                Text(text = "${plant.scientificName}", style = MaterialTheme.typography.subtitle1)
-                Spacer(modifier = Modifier.width(8.dp))
-                OutlinedButton(
-                    onClick = { /* TODO */ }
-                ) {
-                    Text("Show more")
+                with(plant) {
+                    Text(
+                        text = nickname,
+                        color = MaterialTheme.colors.secondaryVariant,
+                        style = MaterialTheme.typography.h5
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(text = "the $commonName.", style = MaterialTheme.typography.subtitle1)
                 }
+
             }
         }
     }
@@ -136,6 +134,7 @@ fun AddPlantButton() {
     )
 }
 
+@ExperimentalMaterialApi
 @ExperimentalFoundationApi
 @Preview(showBackground = true)
 @Composable
