@@ -17,6 +17,7 @@ import com.example.plantrack_android.ui.addplant.AddPlantButton
 import com.example.plantrack_android.ui.addplant.AddPlantScreen
 import com.example.plantrack_android.ui.manageplants.ManagePlantsScreen
 import com.example.plantrack_android.ui.theme.PlanTrackAndroidTheme
+import java.time.LocalDate
 import java.util.*
 
 class MainActivity : ComponentActivity() {
@@ -26,27 +27,30 @@ class MainActivity : ComponentActivity() {
             "Shrimp",
             "Echeveria fleur blanc",
             "Echeveria fleur blanc",
-            GregorianCalendar(2019 + 1900, 7, 27),
+            LocalDate.of(2019, 7, 27),
             "Home Depot",
             false,
+            null,
             null
         ),
         Plant(
             "Butler",
             "Echeveria cubic frost",
             "Echeveria cubic frost",
-            GregorianCalendar(2020 + 1900, 10, 28),
+            LocalDate.of(2020, 10, 28),
             "Gift",
             false,
+            null,
             null
         ),
         Plant(
             "Three Musketeers",
             "Burros tails",
             "Sedum morganianum",
-            GregorianCalendar(2021 + 1900, 1, 24),
+            LocalDate.of(2021, 1, 24),
             "Gift",
             false,
+            null,
             null
         )
     )

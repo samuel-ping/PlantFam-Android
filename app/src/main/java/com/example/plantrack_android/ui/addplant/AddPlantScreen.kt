@@ -1,17 +1,24 @@
 package com.example.plantrack_android.ui.addplant
 
+import android.util.Log
 import android.widget.CalendarView
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentWidth
-import androidx.compose.material.Text
-import androidx.compose.material.TextField
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import com.example.plantrack_android.model.Plant
+import com.example.plantrack_android.ui.manageplants.ManagePlantsScreen
 import com.google.android.material.datepicker.MaterialDatePicker
+import com.vanpra.composematerialdialogs.MaterialDialog
+import com.vanpra.composematerialdialogs.MaterialDialogState
+import com.vanpra.composematerialdialogs.datetime.date.datepicker
+import com.vanpra.composematerialdialogs.rememberMaterialDialogState
+import java.time.LocalDate
 import java.util.*
 
 @Composable
@@ -19,46 +26,159 @@ fun AddPlantScreen() {
     var nickname by remember { mutableStateOf("") }
     var commonName by remember { mutableStateOf("") }
     var scientificName by remember { mutableStateOf("") }
-    var adoptionDate by remember { mutableStateOf("") }
+    var adoptionDate by remember { mutableStateOf(LocalDate.now()) }
     var adoptedFrom by remember { mutableStateOf("") }
-    var isDeceased by remember { mutableStateOf("") }
-    var parent by remember { mutableStateOf("") }
+//    var parent by remember { mutableStateOf("") }
+    var isDeceased by remember { mutableStateOf("No") }
+    var deceasedDate by remember { mutableStateOf(LocalDate.now()) }
 
-    TextField(value = nickname, onValueChange = { nickname = it }, label = { Text("Nickname") })
-    Spacer(modifier = Modifier.width(8.dp))
-    TextField(
-        value = commonName,
-        onValueChange = { commonName = it },
-        label = { Text("Common Name") })
-    Spacer(modifier = Modifier.width(8.dp))
-    TextField(
-        value = scientificName,
-        onValueChange = { scientificName = it },
-        label = { Text("Scientific Name") })
-    Spacer(modifier = Modifier.width(8.dp))
-    TextField(
-        value = adoptedFrom,
-        onValueChange = { nickname = it },
-        label = { Text("Adopted From") }) // TODO: Turn into selection
-    // TODO: Add adoptionDate datepicker, https://stackoverflow.com/a/68883016/13026376
-//    AndroidView(
-//        { CalendarView(it) },
-//        modifier = Modifier.wrapContentWidth(),
-//        update = { views ->
-//            views.setOnDateChangeListener { calendarView, i, i2, i3 ->
-//            }
-//        }
-//    )
-    // TODO: Add boolean switch for isDeceased
-    // TODO: Add selection menu for parent
+    val adoptionDatePickerDialogState = rememberMaterialDialogState()
+    val deceasedDatePickerDialogState = rememberMaterialDialogState()
+
+    Column {
+        Text(
+            text = "Nickname:",
+            modifier = Modifier
+                .padding(8.dp),
+            style = MaterialTheme.typography.body1
+        )
+        TextField(
+            value = nickname,
+            onValueChange = { nickname = it },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp),
+            label = { Text("Nickname") })
+
+        Text(
+            text = "Common Name:",
+            modifier = Modifier.padding(8.dp),
+            style = MaterialTheme.typography.body1
+        )
+        TextField(
+            value = commonName,
+            onValueChange = { commonName = it },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp),
+            label = { Text("Common Name") })
+
+        Text(
+            text = "Scientific Name:",
+            modifier = Modifier.padding(8.dp),
+            style = MaterialTheme.typography.body1
+        )
+        TextField(
+            value = scientificName,
+            onValueChange = { scientificName = it },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp),
+            label = { Text("Scientific Name") })
+
+        Text(
+            text = "Adopted From:",
+            modifier = Modifier.padding(8.dp),
+            style = MaterialTheme.typography.body1
+        )
+        TextField(
+            value = adoptedFrom,
+            onValueChange = { adoptedFrom = it },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp),
+            label = { Text("Adopted From") }) // TODO: Turn into selection
+
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Text(
+                text = "Date of Adoption:",
+                modifier = Modifier.padding(8.dp),
+                style = MaterialTheme.typography.body1
+            )
+            Button(
+                onClick = {
+                    adoptionDatePickerDialogState.show()
+                },
+            ) {
+                Text(text = adoptionDate.toString())
+            }
+        }
+        MaterialDialog(
+            dialogState = adoptionDatePickerDialogState,
+            buttons = {
+                positiveButton("Ok")
+                negativeButton("Cancel")
+            }
+        ) {
+            datepicker { date ->
+                adoptionDate = date;
+            }
+        }
+
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Text(
+                text = "Entered Plant Heaven?",
+                modifier = Modifier
+                    .padding(start = 8.dp),
+                style = MaterialTheme.typography.body1
+            )
+            RadioButton(
+                selected = isDeceased == "No",
+                onClick = {
+                    isDeceased = "No"
+                }
+            )
+            Text(
+                text = "No",
+            )
+
+            Spacer(modifier = Modifier.size(4.dp))
+
+            RadioButton(
+                selected = isDeceased == "Yes",
+                onClick = {
+                    isDeceased = "Yes"
+                }
+            )
+            Text(
+                text = "Yes",
+            )
+        }
+
+        if (isDeceased == "Yes") {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(
+                    text = "Date of Expiration:",
+                    modifier = Modifier.padding(8.dp),
+                    style = MaterialTheme.typography.body1
+                )
+                Button(
+                    onClick = {
+                        deceasedDatePickerDialogState.show()
+                    },
+                ) {
+                    Text(text = deceasedDate.toString())
+                }
+            }
+            MaterialDialog(
+                dialogState = deceasedDatePickerDialogState,
+                buttons = {
+                    positiveButton("Ok")
+                    negativeButton("Cancel")
+                }
+            ) {
+                datepicker { date ->
+                    deceasedDate = date;
+                }
+            }
+        }
+
+        // TODO: Add selection menu for parent
+    }
 }
 
-//private fun showDatePicker() {
-//    val picker = MaterialDatePicker.Builder.datePicker().build()
-//    activity?.let {
-//        picker.show(it.supportFragmentManager, picker.toString())
-//        picker.addOnPositiveButtonClickListener {
-//
-//        }
-//    }
-//}
+@Preview(showBackground = true)
+@Composable
+fun DefaultPreview() {
+    AddPlantScreen()
+}
