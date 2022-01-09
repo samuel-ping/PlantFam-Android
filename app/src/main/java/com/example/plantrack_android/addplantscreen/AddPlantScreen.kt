@@ -1,4 +1,4 @@
-package com.example.plantrack_android.ui.addplant
+package com.example.plantrack_android.addplantscreen
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*

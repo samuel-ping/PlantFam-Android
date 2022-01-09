@@ -8,6 +8,7 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
@@ -17,8 +18,9 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.plantrack_android.model.Plant
 import com.example.plantrack_android.ui.components.AddPlantButton
-import com.example.plantrack_android.ui.addplant.AddPlantScreen
-import com.example.plantrack_android.ui.manageplants.ManagePlantsScreen
+import com.example.plantrack_android.addplantscreen.AddPlantScreen
+import com.example.plantrack_android.manageplantsscreen.ManagePlantsScreen
+import com.example.plantrack_android.ui.components.SavePlantButton
 import com.example.plantrack_android.ui.theme.PlanTrackAndroidTheme
 import java.time.LocalDate
 
@@ -82,21 +84,23 @@ class MainActivity : ComponentActivity() {
                         TopAppBar(
                             title = {
                                 when (backstackEntry.value?.destination?.route) {
-                                    "manageplants" -> {
-                                        Text("PlantTrack")
-                                    }
-                                    "addplant" -> {
-                                        Text("Add Plant")
-                                    }
+                                    "manageplants" -> Text("PlantTrack")
+                                    "addplant" -> Text("Add Plant")
                                 }
                             },
                             navigationIcon = if (navController.previousBackStackEntry != null) {
                                 {
                                     IconButton(onClick = { navController.navigateUp() }) {
-                                        Icon(
-                                            imageVector = Icons.Filled.ArrowBack,
-                                            contentDescription = "Go back"
-                                        )
+                                        when (backstackEntry.value?.destination?.route) {
+                                            "addplant" -> Icon(
+                                                imageVector = Icons.Filled.Close,
+                                                contentDescription = "Close add plant screen"
+                                            )
+                                            else -> Icon(
+                                                imageVector = Icons.Filled.ArrowBack,
+                                                contentDescription = "Go back"
+                                            )
+                                        }
                                     }
                                 }
                             } else {
@@ -108,9 +112,8 @@ class MainActivity : ComponentActivity() {
 //                    bottomBar = {/* TODO */ },
                     floatingActionButton = {
                         when (backstackEntry.value?.destination?.route) {
-                            "manageplants" -> {
-                                AddPlantButton(navController)
-                            }
+                            "manageplants" -> AddPlantButton(navController)
+                            "addplant" -> SavePlantButton(navController)
                         }
                     },
 //                    snackbarHost = {/* TODO */ },

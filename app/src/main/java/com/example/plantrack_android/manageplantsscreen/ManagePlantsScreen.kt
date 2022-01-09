@@ -1,4 +1,4 @@
-package com.example.plantrack_android.ui.manageplants
+package com.example.plantrack_android.manageplantsscreen
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
