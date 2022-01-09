@@ -1,25 +1,16 @@
 package com.example.plantrack_android.ui.addplant
 
-import android.util.Log
-import android.widget.CalendarView
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.viewinterop.AndroidView
-import com.example.plantrack_android.model.Plant
-import com.example.plantrack_android.ui.manageplants.ManagePlantsScreen
-import com.google.android.material.datepicker.MaterialDatePicker
 import com.vanpra.composematerialdialogs.MaterialDialog
-import com.vanpra.composematerialdialogs.MaterialDialogState
 import com.vanpra.composematerialdialogs.datetime.date.datepicker
 import com.vanpra.composematerialdialogs.rememberMaterialDialogState
 import java.time.LocalDate
-import java.util.*
 
 @Composable
 fun AddPlantScreen() {

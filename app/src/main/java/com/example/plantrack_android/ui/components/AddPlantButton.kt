@@ -1,4 +1,4 @@
-package com.example.plantrack_android.ui.addplant
+package com.example.plantrack_android.ui.components
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.ExtendedFloatingActionButton

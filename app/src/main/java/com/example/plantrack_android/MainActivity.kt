@@ -1,10 +1,13 @@
 package com.example.plantrack_android
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
@@ -13,12 +16,11 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.plantrack_android.model.Plant
-import com.example.plantrack_android.ui.addplant.AddPlantButton
+import com.example.plantrack_android.ui.components.AddPlantButton
 import com.example.plantrack_android.ui.addplant.AddPlantScreen
 import com.example.plantrack_android.ui.manageplants.ManagePlantsScreen
 import com.example.plantrack_android.ui.theme.PlanTrackAndroidTheme
 import java.time.LocalDate
-import java.util.*
 
 class MainActivity : ComponentActivity() {
     // TODO: Hardcoded data, delete when possible
@@ -71,11 +73,37 @@ class MainActivity : ComponentActivity() {
     fun PlantTrackApp() {
         val navController = rememberNavController()
         val backstackEntry = navController.currentBackStackEntryAsState()
+        Log.d("Hellooo", backstackEntry.value?.destination.toString())
 
         PlanTrackAndroidTheme {
             Surface(color = MaterialTheme.colors.background) {
                 Scaffold(
-//                    topBar = {/* TODO */ },
+                    topBar = {
+                        TopAppBar(
+                            title = {
+                                when (backstackEntry.value?.destination?.route) {
+                                    "manageplants" -> {
+                                        Text("PlantTrack")
+                                    }
+                                    "addplant" -> {
+                                        Text("Add Plant")
+                                    }
+                                }
+                            },
+                            navigationIcon = if (navController.previousBackStackEntry != null) {
+                                {
+                                    IconButton(onClick = { navController.navigateUp() }) {
+                                        Icon(
+                                            imageVector = Icons.Filled.ArrowBack,
+                                            contentDescription = "Go back"
+                                        )
+                                    }
+                                }
+                            } else {
+                                null
+                            }
+                        )
+                    },
 //                    drawerContent = {/* TODO */ },
 //                    bottomBar = {/* TODO */ },
                     floatingActionButton = {
