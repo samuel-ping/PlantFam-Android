@@ -10,7 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.planttrack.planttrack_android.model.Plant
-import com.planttrack.planttrack_android.ui.theme.PlanTrackAndroidTheme
+import com.planttrack.planttrack_android.ui.theme.PlantTrackAndroidTheme
 import java.time.LocalDate
 
 @ExperimentalMaterialApi
@@ -38,7 +38,7 @@ private fun PlantCardGrid(plants: List<Plant>) {
 @Composable
 private fun PlantCard(plant: Plant) {
     Card(onClick = { /*TODO*/ }, elevation = 6.dp) {
-        PlanTrackAndroidTheme {
+        PlantTrackAndroidTheme {
             Column(modifier = Modifier.padding(24.dp)) {
                 with(plant) {
                     Text(

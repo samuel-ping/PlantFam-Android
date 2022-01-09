@@ -1,7 +1,6 @@
 package com.planttrack.planttrack_android
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -12,18 +11,17 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
+import androidx.navigation.compose.*
 import com.planttrack.planttrack_android.model.Plant
 import com.planttrack.planttrack_android.ui.components.AddPlantButton
 import com.planttrack.planttrack_android.addplantscreen.AddPlantScreen
 import com.planttrack.planttrack_android.manageplantsscreen.ManagePlantsScreen
 import com.planttrack.planttrack_android.ui.components.SavePlantButton
-import com.planttrack.planttrack_android.ui.theme.PlanTrackAndroidTheme
+import com.planttrack.planttrack_android.ui.theme.PlantTrackAndroidTheme
+import dagger.hilt.android.AndroidEntryPoint
 import java.time.LocalDate
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     // TODO: Hardcoded data, delete when possible
     private val plantList = listOf(
@@ -65,7 +63,9 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            PlantTrackApp()
+            PlantTrackAndroidTheme {
+                PlantTrackApp()
+            }
         }
     }
 
@@ -75,51 +75,48 @@ class MainActivity : ComponentActivity() {
     fun PlantTrackApp() {
         val navController = rememberNavController()
         val backstackEntry = navController.currentBackStackEntryAsState()
-        Log.d("Hellooo", backstackEntry.value?.destination.toString())
 
-        PlanTrackAndroidTheme {
-            Surface(color = MaterialTheme.colors.background) {
-                Scaffold(
-                    topBar = {
-                        TopAppBar(
-                            title = {
-                                when (backstackEntry.value?.destination?.route) {
-                                    "manageplants" -> Text("PlantTrack")
-                                    "addplant" -> Text("Add Plant")
-                                }
-                            },
-                            navigationIcon = if (navController.previousBackStackEntry != null) {
-                                {
-                                    IconButton(onClick = { navController.navigateUp() }) {
-                                        when (backstackEntry.value?.destination?.route) {
-                                            "addplant" -> Icon(
-                                                imageVector = Icons.Filled.Close,
-                                                contentDescription = "Close add plant screen"
-                                            )
-                                            else -> Icon(
-                                                imageVector = Icons.Filled.ArrowBack,
-                                                contentDescription = "Go back"
-                                            )
-                                        }
+        Surface(color = MaterialTheme.colors.background) {
+            Scaffold(
+                topBar = {
+                    TopAppBar(
+                        title = {
+                            when (backstackEntry.value?.destination?.route) {
+                                "manageplants" -> Text("PlantTrack")
+                                "addplant" -> Text("Add Plant")
+                            }
+                        },
+                        navigationIcon = if (navController.previousBackStackEntry != null) {
+                            {
+                                IconButton(onClick = { navController.navigateUp() }) {
+                                    when (backstackEntry.value?.destination?.route) {
+                                        "addplant" -> Icon(
+                                            imageVector = Icons.Filled.Close,
+                                            contentDescription = "Close add plant screen"
+                                        )
+                                        else -> Icon(
+                                            imageVector = Icons.Filled.ArrowBack,
+                                            contentDescription = "Go back"
+                                        )
                                     }
                                 }
-                            } else {
-                                null
                             }
-                        )
-                    },
+                        } else {
+                            null
+                        }
+                    )
+                },
 //                    drawerContent = {/* TODO */ },
 //                    bottomBar = {/* TODO */ },
-                    floatingActionButton = {
-                        when (backstackEntry.value?.destination?.route) {
-                            "manageplants" -> AddPlantButton(navController)
-                            "addplant" -> SavePlantButton(navController)
-                        }
-                    },
+                floatingActionButton = {
+                    when (backstackEntry.value?.destination?.route) {
+                        "manageplants" -> AddPlantButton(navController)
+                        "addplant" -> SavePlantButton(navController)
+                    }
+                },
 //                    snackbarHost = {/* TODO */ },
-                ) {
-                    PlantNavHost(navController)
-                }
+            ) {
+                PlantNavHost(navController)
             }
         }
     }
