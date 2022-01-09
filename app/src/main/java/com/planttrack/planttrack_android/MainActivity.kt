@@ -1,4 +1,4 @@
-package com.example.plantrack_android
+package com.planttrack.planttrack_android
 
 import android.os.Bundle
 import android.util.Log
@@ -16,12 +16,12 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.plantrack_android.model.Plant
-import com.example.plantrack_android.ui.components.AddPlantButton
-import com.example.plantrack_android.addplantscreen.AddPlantScreen
-import com.example.plantrack_android.manageplantsscreen.ManagePlantsScreen
-import com.example.plantrack_android.ui.components.SavePlantButton
-import com.example.plantrack_android.ui.theme.PlanTrackAndroidTheme
+import com.planttrack.planttrack_android.model.Plant
+import com.planttrack.planttrack_android.ui.components.AddPlantButton
+import com.planttrack.planttrack_android.addplantscreen.AddPlantScreen
+import com.planttrack.planttrack_android.manageplantsscreen.ManagePlantsScreen
+import com.planttrack.planttrack_android.ui.components.SavePlantButton
+import com.planttrack.planttrack_android.ui.theme.PlanTrackAndroidTheme
 import java.time.LocalDate
 
 class MainActivity : ComponentActivity() {

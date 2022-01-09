@@ -1,4 +1,4 @@
-package com.example.plantrack_android.model
+package com.planttrack.planttrack_android.model
 
 import java.time.LocalDate
 

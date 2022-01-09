@@ -1,4 +1,4 @@
-package com.example.plantrack_android.manageplantsscreen
+package com.planttrack.planttrack_android.manageplantsscreen
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
@@ -9,8 +9,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.plantrack_android.model.Plant
-import com.example.plantrack_android.ui.theme.PlanTrackAndroidTheme
+import com.planttrack.planttrack_android.model.Plant
+import com.planttrack.planttrack_android.ui.theme.PlanTrackAndroidTheme
 import java.time.LocalDate
 
 @ExperimentalMaterialApi

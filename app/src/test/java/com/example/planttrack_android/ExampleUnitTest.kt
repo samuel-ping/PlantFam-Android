@@ -1,4 +1,4 @@
-package com.example.plantrack_android
+package com.example.planttrack_android
 
 import org.junit.Test
 

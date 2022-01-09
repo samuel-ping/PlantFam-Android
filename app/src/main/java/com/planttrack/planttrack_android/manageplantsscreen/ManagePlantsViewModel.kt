@@ -1,8 +1,8 @@
-package com.example.plantrack_android.manageplantsscreen
+package com.planttrack.planttrack_android.manageplantsscreen
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.plantrack_android.model.Plant
+import com.planttrack.planttrack_android.model.Plant
 import java.time.LocalDate
 
 class ManagePlantsViewModel : ViewModel() {

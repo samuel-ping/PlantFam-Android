@@ -1,4 +1,4 @@
-package com.example.plantrack_android.ui.components
+package com.planttrack.planttrack_android.ui.components
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.ExtendedFloatingActionButton
@@ -6,7 +6,7 @@ import androidx.compose.material.FloatingActionButtonDefaults
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Save
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -14,13 +14,13 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 
 @Composable
-fun AddPlantButton(navHostController: NavHostController) {
+fun SavePlantButton(navController: NavHostController) {
     ExtendedFloatingActionButton(
-        text = { Text("Add plant") },
-        onClick = { navHostController.navigate("addplant") },
+        text = { Text("Save") },
+        onClick = {/*TODO*/},
         icon = {
             Icon(
-                Icons.Filled.Add, "Add new plant", tint = Color.White
+                Icons.Filled.Save, "Save Plant", tint = Color.White
             )
         },
         elevation = FloatingActionButtonDefaults.elevation(8.dp),

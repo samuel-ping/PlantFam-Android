@@ -1,4 +1,4 @@
-package com.example.plantrack_android.ui.theme
+package com.planttrack.planttrack_android.ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.MaterialTheme

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.plantrack_android">
+    package="com.example.planttrack_android">
 
     <application
         android:allowBackup="true"
@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PlanTrackAndroid">
         <activity
-            android:name=".MainActivity"
+            android:name="com.example.planttrack_android.com.planttrack.planttrack_android.MainActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.PlanTrackAndroid.NoActionBar">
