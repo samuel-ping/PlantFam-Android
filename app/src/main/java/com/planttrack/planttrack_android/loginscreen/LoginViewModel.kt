@@ -13,16 +13,11 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor() : ViewModel() {
-//    var scaffoldState = ScaffoldState(DrawerState(initialValue = DrawerValue.Closed), SnackbarHostState())
-//    var isSnackBarShowing: Boolean by mutableStateOf(false)
-//        private set
-
     fun login(
         username: String,
         password: String,
         creatingUser: Boolean,
         onSuccess: () -> Unit,
-        onFailure: () -> Unit,
         scaffoldState: ScaffoldState,
         scope: CoroutineScope
     ) {
@@ -38,7 +33,7 @@ class LoginViewModel @Inject constructor() : ViewModel() {
                     Log.e(TAG(), "Error: ${it.error}")
                 } else {
                     Log.i(TAG(), "Successfully registered user.")
-                    login(username, password, false, onSuccess, onFailure, scaffoldState, scope)
+                    login(username, password, true, onSuccess, scaffoldState, scope)
                 }
             }
         } else {
@@ -47,9 +42,11 @@ class LoginViewModel @Inject constructor() : ViewModel() {
                 if (!it.isSuccess) {
                     onLoginFailed("Failed to log in.", scaffoldState, scope)
                     Log.e(TAG(), "Error: ${it.error}")
-                    onFailure
                 }
-                else onSuccess
+                else {
+                    Log.i(TAG(), "Logging in user.")
+                    onSuccess()
+                }
             }
         }
     }

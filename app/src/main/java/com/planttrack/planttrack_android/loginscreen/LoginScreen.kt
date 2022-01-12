@@ -17,6 +17,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import com.planttrack.planttrack_android.TAG
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -27,44 +28,78 @@ fun LoginScreen(
     scope: CoroutineScope,
     viewModel: LoginViewModel
 ) {
-//    var tab by +state
-//        var email by rememberSaveable { mutableStateOf("") }
-//        var password by rememberSaveable { mutableStateOf("") }
+    var tabIndex by remember { mutableStateOf(0) }
+    val tabTitles = listOf("New User", "Existing User")
+    var formEnabled by rememberSaveable { mutableStateOf(true) }
+
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var isEnabled by remember { mutableStateOf(true) }
 
-    val focusManager = LocalFocusManager.current
+//    val focusManager = LocalFocusManager.current
 
-    Column(verticalArrangement = Arrangement.Center,
+    Column(
+        verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
-            .background(Color.LightGray)
-            .fillMaxSize()
-            .clickable { focusManager.clearFocus() }) {
-        LoginFields(
-            isEnabled = isEnabled,
-            email = email,
-            password = password,
-            onEmailChange = { email = it },
-            onPasswordChange = { password = it },
-            onLoginClick = {
-                // while login is running, show loading
-                // once login finishes
-                // TODO: Disable login button and textfields, then reenable if error
-                viewModel.login(
-                    email,
-                    password,
-                    false,
-                    { navController.navigate("manageplants") },
-                    {},
-                    scaffoldState,
-                    scope
-                )
-                // Navigate to manageplants if login success
-                //
-            },
-        )
+//            .background(Color.LightGray)
+//            .fillMaxSize()
+    )
+//            .clickable { focusManager.clearFocus() })
+    {
+        TabRow(selectedTabIndex = tabIndex) { // 3.
+            tabTitles.forEachIndexed { index, title ->
+                Tab(selected = tabIndex == index, // 4.
+                    onClick = { tabIndex = index },
+                    text = { Text(text = title) }) // 5.
+            }
+        }
+        when (tabIndex) { // 6.
+            0 -> LoginFields(
+                isEnabled = isEnabled,
+                email = email,
+                password = password,
+                onEmailChange = { email = it },
+                onPasswordChange = { password = it },
+                onLoginClick = {
+                    isEnabled = false
+                    // TODO: Disable login button and textfields, then reenable if error
+                    viewModel.login(
+                        email,
+                        password,
+                        false,
+                        {
+                            navController.navigate("manageplants")
+                        },
+                        scaffoldState,
+                        scope
+                    )
+                    isEnabled = true
+                },
+            )
+            1 -> LoginFields(
+                isEnabled = isEnabled,
+                email = email,
+                password = password,
+                onEmailChange = { email = it },
+                onPasswordChange = { password = it },
+                onLoginClick = {
+                    isEnabled = false
+                    // TODO: Disable login button and textfields, then reenable if error
+                    viewModel.login(
+                        email,
+                        password,
+                        true,
+                        {
+                            navController.navigate("manageplants")
+                        },
+                        scaffoldState,
+                        scope
+                    )
+                    isEnabled = true
+                },
+            )
+        }
     }
 }
 
