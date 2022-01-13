@@ -1,7 +1,6 @@
 package com.planttrack.planttrack_android
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -10,21 +9,21 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.*
-import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.*
-import com.planttrack.planttrack_android.service.model.Plant
 import com.planttrack.planttrack_android.ui.components.AddPlantButton
 import com.planttrack.planttrack_android.addplantscreen.AddPlantScreen
 import com.planttrack.planttrack_android.addplantscreen.AddPlantViewModel
 import com.planttrack.planttrack_android.loginscreen.LoginScreen
 import com.planttrack.planttrack_android.loginscreen.LoginViewModel
 import com.planttrack.planttrack_android.manageplantsscreen.ManagePlantsScreen
+import com.planttrack.planttrack_android.manageplantsscreen.ManagePlantsViewModel
+import com.planttrack.planttrack_android.settingsscreen.SettingsScreen
+import com.planttrack.planttrack_android.ui.components.BottomAppBarContent
 import com.planttrack.planttrack_android.ui.components.SavePlantButton
 import com.planttrack.planttrack_android.ui.theme.PlantTrackAndroidTheme
 import dagger.hilt.android.AndroidEntryPoint
-import java.time.LocalDate
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -97,10 +96,10 @@ class MainActivity : ComponentActivity() {
                                 "login" -> Text("Log In")
                                 "manageplants" -> Text("PlantTrack")
                                 "addplant" -> Text("Add Plant")
+                                "settings" -> Text("Settings")
                             }
                         },
                         navigationIcon =
-//                        if (navController.currentBackStackEntry != null) {
                         if (canPop) {
                             {
                                 IconButton(
@@ -111,10 +110,10 @@ class MainActivity : ComponentActivity() {
                                             imageVector = Icons.Filled.Close,
                                             contentDescription = "Close add plant screen"
                                         )
-                                        else -> Icon(
-                                            imageVector = Icons.Filled.ArrowBack,
-                                            contentDescription = "Go back"
-                                        )
+//                                        else -> Icon(
+//                                            imageVector = Icons.Filled.ArrowBack,
+//                                            contentDescription = "Go back"
+//                                        )
                                     }
                                 }
                             }
@@ -122,7 +121,7 @@ class MainActivity : ComponentActivity() {
                     )
                 },
 //                    drawerContent = {/* TODO */ },
-//                    bottomBar = {/* TODO */ },
+                bottomBar = { BottomAppBarContent(navController) },
                 floatingActionButton = {
                     when (backstackEntry.value?.destination?.route) {
                         "manageplants" -> AddPlantButton(navController)
@@ -142,16 +141,19 @@ class MainActivity : ComponentActivity() {
     fun PlantNavHost(navController: NavHostController, scaffoldState: ScaffoldState) {
         NavHost(
             navController = navController,
-            startDestination = "login",
+            startDestination = if (plantTrackApp.currentUser() == null) "login" else "manageplants"
         ) {
             composable("login") {
                 LoginDestination(navController = navController, scaffoldState = scaffoldState)
             }
             composable("manageplants") {
-                ManagePlantsScreen(plants = mutableListOf())
+                ManagePlantsDestination()
             }
             composable("addplant") {
                 AddPlantScreen()
+            }
+            composable("settings") {
+                SettingsScreen()
             }
         }
     }
@@ -161,6 +163,14 @@ class MainActivity : ComponentActivity() {
         val loginViewModel: LoginViewModel = hiltViewModel()
         var scope = rememberCoroutineScope()
         LoginScreen(navController, scaffoldState, scope, loginViewModel)
+    }
+
+    @ExperimentalFoundationApi
+    @ExperimentalMaterialApi
+    @Composable
+    fun ManagePlantsDestination() {
+        val managePlantViewModel: ManagePlantsViewModel = hiltViewModel()
+        ManagePlantsScreen(plants = mutableListOf())
     }
 
     @Composable
