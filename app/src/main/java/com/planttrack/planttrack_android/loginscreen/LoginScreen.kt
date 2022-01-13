@@ -59,6 +59,7 @@ fun LoginScreen(
                             password,
                             true,
                             {
+                                navController.popBackStack()
                                 navController.navigate("manageplants")
                             },
                             scaffoldState,
@@ -82,6 +83,7 @@ fun LoginScreen(
                         password,
                         false,
                         {
+                            navController.popBackStack()
                             navController.navigate("manageplants")
                         },
                         scaffoldState,
