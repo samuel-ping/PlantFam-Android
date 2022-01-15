@@ -20,6 +20,7 @@ import com.planttrack.planttrack_android.loginscreen.LoginViewModel
 import com.planttrack.planttrack_android.manageplantsscreen.ManagePlantsScreen
 import com.planttrack.planttrack_android.manageplantsscreen.ManagePlantsViewModel
 import com.planttrack.planttrack_android.settingsscreen.SettingsScreen
+import com.planttrack.planttrack_android.settingsscreen.SettingsViewModel
 import com.planttrack.planttrack_android.ui.components.BottomAppBarContent
 import com.planttrack.planttrack_android.ui.components.SavePlantButton
 import com.planttrack.planttrack_android.ui.theme.PlantTrackAndroidTheme
@@ -94,33 +95,26 @@ class MainActivity : ComponentActivity() {
                         title = {
                             when (backstackEntry.value?.destination?.route) {
                                 "login" -> Text("Log In")
-                                "manageplants" -> Text("PlantTrack")
+                                "manageplants" -> Text("My Plants")
                                 "addplant" -> Text("Add Plant")
                                 "settings" -> Text("Settings")
                             }
                         },
                         navigationIcon =
-                        if (canPop) {
+                        if (backstackEntry.value?.destination?.route == "addplant") {
                             {
                                 IconButton(
                                     onClick = { navController.navigateUp() }
                                 ) {
-                                    when (backstackEntry.value?.destination?.route) {
-                                        "addplant" -> Icon(
-                                            imageVector = Icons.Filled.Close,
-                                            contentDescription = "Close add plant screen"
-                                        )
-//                                        else -> Icon(
-//                                            imageVector = Icons.Filled.ArrowBack,
-//                                            contentDescription = "Go back"
-//                                        )
-                                    }
+                                    Icon(
+                                        imageVector = Icons.Filled.Close,
+                                        contentDescription = "Close add plant screen"
+                                    )
                                 }
                             }
                         } else null
                     )
                 },
-//                    drawerContent = {/* TODO */ },
                 bottomBar = { BottomAppBarContent(navController) },
                 floatingActionButton = {
                     when (backstackEntry.value?.destination?.route) {
@@ -144,17 +138,14 @@ class MainActivity : ComponentActivity() {
             startDestination = if (plantTrackApp.currentUser() == null) "login" else "manageplants"
         ) {
             composable("login") {
-                LoginDestination(navController = navController, scaffoldState = scaffoldState)
+                LoginDestination(
+                    navController = navController,
+                    scaffoldState = scaffoldState
+                )
             }
-            composable("manageplants") {
-                ManagePlantsDestination()
-            }
-            composable("addplant") {
-                AddPlantScreen()
-            }
-            composable("settings") {
-                SettingsScreen()
-            }
+            composable("manageplants") { ManagePlantsDestination() }
+            composable("addplant") { AddPlantScreen() }
+            composable("settings") { SettingsDestination(navController = navController) }
         }
     }
 
@@ -170,11 +161,17 @@ class MainActivity : ComponentActivity() {
     @Composable
     fun ManagePlantsDestination() {
         val managePlantViewModel: ManagePlantsViewModel = hiltViewModel()
-        ManagePlantsScreen(plants = mutableListOf())
+        ManagePlantsScreen(managePlantViewModel)
     }
 
     @Composable
     fun AddPlantDestination(navController: NavHostController) {
         val viewModel: AddPlantViewModel = hiltViewModel()
+    }
+
+    @Composable
+    fun SettingsDestination(navController: NavHostController) {
+        val settingsViewModel: SettingsViewModel = hiltViewModel()
+        SettingsScreen(navController, settingsViewModel)
     }
 }

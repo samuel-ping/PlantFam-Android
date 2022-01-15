@@ -13,8 +13,6 @@ import io.realm.mongodb.AppConfiguration
 lateinit var plantTrackApp: App
 
 inline fun <reified T> T.TAG(): String = T::class.java.simpleName
-const val PARTITION_EXTRA_KEY = "PARTITION"
-const val PROJECT_NAME_EXTRA_KEY = "PROJECT NAME"
 
 @HiltAndroidApp
 class PlantTrackApplication : Application() {
@@ -25,7 +23,7 @@ class PlantTrackApplication : Application() {
         Realm.init(this)
         plantTrackApp = App(
             AppConfiguration.Builder(BuildConfig.MONGODB_REALM_APP_ID)
-                .defaultSyncErrorHandler { session, error ->
+                .defaultSyncErrorHandler { _, error ->
                     Log.e(TAG(), "Sync error: ${error.errorMessage}")
                 }
                 .build())
