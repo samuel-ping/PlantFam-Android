@@ -3,17 +3,17 @@ package com.planttrack.planttrack_android
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.*
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.*
-import com.planttrack.planttrack_android.ui.components.AddPlantButton
+import com.google.accompanist.navigation.animation.AnimatedNavHost
+import com.google.accompanist.navigation.animation.composable
+import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.planttrack.planttrack_android.addplantscreen.AddPlantScreen
 import com.planttrack.planttrack_android.addplantscreen.AddPlantViewModel
 import com.planttrack.planttrack_android.loginscreen.LoginScreen
@@ -22,13 +22,12 @@ import com.planttrack.planttrack_android.manageplantsscreen.ManagePlantsScreen
 import com.planttrack.planttrack_android.manageplantsscreen.ManagePlantsViewModel
 import com.planttrack.planttrack_android.settingsscreen.SettingsScreen
 import com.planttrack.planttrack_android.settingsscreen.SettingsViewModel
-import com.planttrack.planttrack_android.ui.components.BottomAppBarContent
-import com.planttrack.planttrack_android.ui.components.SavePlantButton
 import com.planttrack.planttrack_android.ui.theme.PlantTrackAndroidTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+    @ExperimentalAnimationApi
     @ExperimentalMaterialApi
     @ExperimentalFoundationApi
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,11 +40,12 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    @ExperimentalAnimationApi
     @ExperimentalFoundationApi
     @ExperimentalMaterialApi
     @Composable
     fun PlantTrackApp() {
-        val navController = rememberNavController()
+        val navController = rememberAnimatedNavController()
         val scaffoldState = rememberScaffoldState()
 
         Surface(color = MaterialTheme.colors.background) {
@@ -53,13 +53,19 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    @ExperimentalAnimationApi
     @ExperimentalFoundationApi
     @ExperimentalMaterialApi
     @Composable
     fun PlantNavHost(navController: NavHostController, scaffoldState: ScaffoldState) {
-        NavHost(
+        AnimatedNavHost(
             navController = navController,
-            startDestination = if (plantTrackApp.currentUser() == null) "login" else "manageplants"
+            startDestination = if (plantTrackApp.currentUser() == null) "login" else "manageplants",
+            // Disable animations between screen transitions.
+            enterTransition = { EnterTransition.None },
+            exitTransition = { ExitTransition.None },
+            popEnterTransition = { EnterTransition.None },
+            popExitTransition = { ExitTransition.None },
         ) {
             composable("login") {
                 LoginDestination(
