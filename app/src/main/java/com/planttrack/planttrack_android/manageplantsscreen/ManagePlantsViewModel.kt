@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.neverEqualPolicy
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.planttrack.planttrack_android.TAG
 import com.planttrack.planttrack_android.plantTrackApp
 import com.planttrack.planttrack_android.service.model.Plant
@@ -14,12 +15,21 @@ import io.realm.*
 import io.realm.kotlin.where
 import io.realm.mongodb.User
 import io.realm.mongodb.sync.SyncConfiguration
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class ManagePlantsViewModel @Inject constructor() : ViewModel() {
+    private val _isRefreshing = MutableStateFlow(false)
+    val isRefreshing: StateFlow<Boolean>
+        get() = _isRefreshing.asStateFlow()
+
+    private lateinit var realm: Realm
     private var user: User? = plantTrackApp.currentUser()
-    private var realm: Realm? = null
 
     var plants: List<Plant> by mutableStateOf(listOf(), neverEqualPolicy())
         private set
@@ -32,20 +42,21 @@ class ManagePlantsViewModel @Inject constructor() : ViewModel() {
 
     private fun instantiateSyncedRealm() {
 //        val config = SyncConfiguration.Builder(user = user!!,  partitionValue = "user=${user!!.id}").build()
-        val config = SyncConfiguration.defaultConfig(user!!, "user=${user!!.id}")
+        val config = SyncConfiguration.defaultConfig(user!!, "${user!!.id}")
+        Log.d(TAG(), "Config: partitionValue=${user!!.id}")
 //        syncedRealm = Realm.getInstance(config)
         // Sync all realm changes via a new instance, and when that instance has been successfully created connect it to an on-screen list (a recycler view)
         Realm.getInstanceAsync(config, object : Realm.Callback() {
             override fun onSuccess(realm: Realm) {
                 // since this realm should live exactly as long as this activity, assign the realm to a member variable
                 this@ManagePlantsViewModel.realm = realm
-                getPlants(realm)
+                getPlants()
             }
         })
     }
 
-    private fun getPlants(realm: Realm) {
-        plantsList = realm.where<Plant>().findAll()
+    private fun getPlants() {
+        plantsList = realm.where<Plant>().findAllAsync()
 
         val plantsChangeListener =
             OrderedRealmCollectionChangeListener<RealmResults<Plant>> { updatedResult: RealmResults<Plant>, _: OrderedCollectionChangeSet ->
@@ -54,6 +65,16 @@ class ManagePlantsViewModel @Inject constructor() : ViewModel() {
             }
 
         plantsList.addChangeListener(plantsChangeListener)
+    }
+
+    fun refresh() {
+        Log.i(TAG(), "Refreshing plants.")
+        viewModelScope.launch {
+            _isRefreshing.emit(true)
+            delay(1000) // TODO: Delete this lol
+            getPlants()
+            _isRefreshing.emit(false)
+        }
     }
 
     override fun onCleared() {

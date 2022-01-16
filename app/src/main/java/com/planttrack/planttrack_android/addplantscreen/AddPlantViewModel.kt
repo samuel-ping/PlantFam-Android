@@ -14,7 +14,7 @@ import javax.inject.Inject
 @HiltViewModel
 class AddPlantViewModel @Inject constructor() : ViewModel() {
     private lateinit var realm: Realm
-    private var user: User? = null
+    var user: User? = null
 
     init {
         user = plantTrackApp.currentUser()
@@ -22,7 +22,7 @@ class AddPlantViewModel @Inject constructor() : ViewModel() {
     }
 
     private fun instantiateSyncedRealm() {
-        val config = SyncConfiguration.defaultConfig(user!!, "user=${user!!.id}")
+        val config = SyncConfiguration.defaultConfig(user!!, "${user!!.id}")
 
         // Sync all realm changes via a new instance, and when that instance has been successfully created connect it to an on-screen list (a recycler view)
         Realm.getInstanceAsync(config, object : Realm.Callback() {

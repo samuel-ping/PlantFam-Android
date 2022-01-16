@@ -8,10 +8,14 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.planttrack.planttrack_android.plantTrackApp
 import com.planttrack.planttrack_android.service.model.Plant
 import com.planttrack.planttrack_android.ui.components.AddPlantButton
@@ -26,6 +30,8 @@ import java.time.LocalDate
 @ExperimentalFoundationApi
 @Composable
 fun ManagePlantsScreen(navController: NavHostController, viewModel: ManagePlantsViewModel) {
+    val isRefreshing by viewModel.isRefreshing.collectAsState()
+
     Scaffold(
         topBar = {
             TopAppBar(title = { Text("My Plants") })
@@ -35,7 +41,12 @@ fun ManagePlantsScreen(navController: NavHostController, viewModel: ManagePlants
             AddPlantButton(navController)
         },
     ) {
-        PlantCardGrid(plants = viewModel.plants)
+        SwipeRefresh(
+            state = rememberSwipeRefreshState(isRefreshing),
+            onRefresh = { viewModel.refresh() }
+        ) {
+            PlantCardGrid(plants = viewModel.plants)
+        }
     }
 }
 

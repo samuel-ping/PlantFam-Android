@@ -55,6 +55,7 @@ fun AddPlantScreen(navController: NavHostController, viewModel: AddPlantViewMode
                     val defaultZoneId: ZoneId = ZoneId.systemDefault()
 
                     val plant = Plant(
+                        viewModel.user!!.id,
                         if (nickname.isBlank()) null else nickname,
                         if (commonName.isBlank()) null else commonName,
                         if (scientificName.isBlank()) null else scientificName,
@@ -66,7 +67,7 @@ fun AddPlantScreen(navController: NavHostController, viewModel: AddPlantViewMode
                         ) else null,
                     )
 
-                    viewModel.addPlant(plant)
+                    if (plant != null) viewModel.addPlant(plant)
 
                     navController.navigateUp()
                 }

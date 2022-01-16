@@ -12,23 +12,15 @@ import java.util.*
 
 @RealmClass
 open class Plant(
-    nickname: String? = null,
-    commonName: String? = null,
-    scientificName: String? = null,
-    adoptionDate: Date = Date(),
-    adoptedFrom: String? = null,
-    isDeceased: Boolean? = null,
-    deceasedDate: Date? = null,
-    parent: Plant? = null
+    @Required var _partition: String? = "",
+    var nickname: String? = null,
+    var commonName: String? = null,
+    var scientificName: String? = null,
+    @Required var adoptionDate: Date = Date(),
+    var adoptedFrom: String? = null,
+    var isDeceased: Boolean? = null,
+    var deceasedDate: Date? = null,
+    var parent: Plant? = null
 ) : RealmObject() {
     @PrimaryKey @RealmField("_id") var id : ObjectId = ObjectId()
-
-    var nickname: String? = nickname
-    var commonName: String? = commonName
-    var scientificName: String? = scientificName
-    @Required var adoptionDate: Date = adoptionDate
-    var adoptedFrom: String? = adoptedFrom
-    var isDeceased: Boolean? = isDeceased
-    var deceasedDate: Date? = deceasedDate
-    var parent: Plant? = parent
 }

@@ -19,8 +19,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor() : ViewModel() {
-//    lateinit var syncedRealm: Realm
-
     var isBusy by mutableStateOf(false)
 
     fun login(
@@ -60,19 +58,12 @@ class LoginViewModel @Inject constructor() : ViewModel() {
                 }
                 else {
                     Log.i(TAG(), "User successfully logged in.")
-//                    instantiateSyncedRealm(it.get())
                     isBusy = false
                     onSuccess()
                 }
             }
         }
     }
-
-//    private fun instantiateSyncedRealm(user: User?) {
-//        val config = SyncConfiguration.Builder(user = user!!,  partitionValue = "user=${user!!.id}").build()
-//        val config = SyncConfiguration.defaultConfig(user!!, "user=${user!!.id}")
-//        syncedRealm = Realm.getInstance(config)
-//    }
 
     private fun validCredentials(username: String, password: String): Boolean = when {
         // zero-length usernames and passwords are not valid (or secure), so prevent users from creating accounts with those client-side.
