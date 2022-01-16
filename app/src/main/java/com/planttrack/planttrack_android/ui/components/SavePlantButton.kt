@@ -14,15 +14,11 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 
 @Composable
-fun SavePlantButton(navController: NavHostController) {
+fun SavePlantButton(addPlant: () -> Unit) {
     ExtendedFloatingActionButton(
         text = { Text("Save") },
-        onClick = {/*TODO*/},
-        icon = {
-            Icon(
-                Icons.Filled.Save, "Save Plant", tint = Color.White
-            )
-        },
+        onClick = { addPlant() },
+        icon = { Icon(Icons.Filled.Save, "Save Plant", tint = Color.White) },
         elevation = FloatingActionButtonDefaults.elevation(8.dp),
         backgroundColor = Color.Green,
         contentColor = Color.White,

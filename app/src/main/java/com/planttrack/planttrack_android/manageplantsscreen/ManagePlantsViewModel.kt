@@ -19,8 +19,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ManagePlantsViewModel @Inject constructor() : ViewModel() {
     private var user: User? = plantTrackApp.currentUser()
-    private var userRealm: Realm? = null
-
+    private var realm: Realm? = null
 
     var plants: List<Plant> by mutableStateOf(listOf(), neverEqualPolicy())
         private set
@@ -39,7 +38,7 @@ class ManagePlantsViewModel @Inject constructor() : ViewModel() {
         Realm.getInstanceAsync(config, object : Realm.Callback() {
             override fun onSuccess(realm: Realm) {
                 // since this realm should live exactly as long as this activity, assign the realm to a member variable
-                userRealm = realm
+                this@ManagePlantsViewModel.realm = realm
                 getPlants(realm)
             }
         })
@@ -59,6 +58,8 @@ class ManagePlantsViewModel @Inject constructor() : ViewModel() {
 
     override fun onCleared() {
         super.onCleared()
+        Log.i(TAG(), "Clearing ManagePlantsViewModel.")
         plantsList.removeAllChangeListeners()
+        realm?.close()
     }
 }

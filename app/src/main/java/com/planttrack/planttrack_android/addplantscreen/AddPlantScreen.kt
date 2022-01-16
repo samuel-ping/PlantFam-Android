@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.planttrack.planttrack_android.service.model.Plant
 import com.planttrack.planttrack_android.ui.components.AddPlantButton
 import com.planttrack.planttrack_android.ui.components.BottomAppBarContent
 import com.planttrack.planttrack_android.ui.components.SavePlantButton
@@ -17,6 +18,8 @@ import com.vanpra.composematerialdialogs.MaterialDialog
 import com.vanpra.composematerialdialogs.datetime.date.datepicker
 import com.vanpra.composematerialdialogs.rememberMaterialDialogState
 import java.time.LocalDate
+import java.time.ZoneId
+import java.util.*
 
 @Composable
 fun AddPlantScreen(navController: NavHostController, viewModel: AddPlantViewModel) {
@@ -35,13 +38,9 @@ fun AddPlantScreen(navController: NavHostController, viewModel: AddPlantViewMode
     Scaffold(
         topBar = {
             TopAppBar(
-                title = {
-                    Text("Add Plant")
-                },
+                title = { Text("Add Plant") },
                 navigationIcon = {
-                    IconButton(
-                        onClick = { navController.navigateUp() }
-                    ) {
+                    IconButton(onClick = { navController.navigateUp() }) {
                         Icon(
                             imageVector = Icons.Filled.Close,
                             contentDescription = "Close add plant screen"
@@ -50,9 +49,30 @@ fun AddPlantScreen(navController: NavHostController, viewModel: AddPlantViewMode
                 }
             )
         },
-        floatingActionButton = { SavePlantButton(navController) },
-    ) {
+        floatingActionButton = {
+            SavePlantButton(
+                addPlant = {
+                    val defaultZoneId: ZoneId = ZoneId.systemDefault()
 
+                    val plant = Plant(
+                        if (nickname.isBlank()) null else nickname,
+                        if (commonName.isBlank()) null else commonName,
+                        if (scientificName.isBlank()) null else scientificName,
+                        Date.from(adoptionDate.atStartOfDay(defaultZoneId).toInstant()),
+                        if (adoptedFrom.isBlank()) null else adoptedFrom,
+                        isDeceased == "Yes",
+                        if (isDeceased == "Yes") Date.from(
+                            deceasedDate.atStartOfDay(defaultZoneId).toInstant()
+                        ) else null,
+                    )
+
+                    viewModel.addPlant(plant)
+
+                    navController.navigateUp()
+                }
+            )
+        },
+    ) {
         Column {
             Text(
                 text = "Nickname:",
@@ -195,6 +215,7 @@ fun AddPlantScreen(navController: NavHostController, viewModel: AddPlantViewMode
         }
     }
 }
+
 
 @Preview(showBackground = true)
 @Composable
