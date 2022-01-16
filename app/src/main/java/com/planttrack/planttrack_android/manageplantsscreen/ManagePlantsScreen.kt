@@ -38,7 +38,7 @@ fun ManagePlantsScreen(navController: NavHostController, viewModel: ManagePlants
             state = rememberSwipeRefreshState(isRefreshing),
             onRefresh = { viewModel.refresh() }
         ) {
-            PlantCardGrid(plants = viewModel.plants)
+            PlantCardGrid(viewModel.plants, navController)
         }
     }
 }
@@ -46,21 +46,26 @@ fun ManagePlantsScreen(navController: NavHostController, viewModel: ManagePlants
 @ExperimentalMaterialApi
 @ExperimentalFoundationApi
 @Composable
-private fun PlantCardGrid(plants: List<Plant>) {
+private fun PlantCardGrid(plants: List<Plant>, navController: NavHostController) {
     LazyVerticalGrid(
         cells = GridCells.Fixed(count = 2),
         contentPadding = PaddingValues(8.dp)
     ) {
         items(plants.size) { plant ->
-            PlantCard(plants[plant]) // TODO: This seems wrong?
+            PlantCard(plants[plant], onClick = {
+                navController.navigate("details/${plants[plant].id}")
+            }) // TODO: plants[plant] seems wrong?
         }
     }
 }
 
 @ExperimentalMaterialApi
 @Composable
-private fun PlantCard(plant: Plant) {
-    Card(onClick = { /*TODO*/ }, elevation = 6.dp) {
+private fun PlantCard(plant: Plant, onClick: () -> Unit) {
+    Card(
+        onClick = { onClick() },
+        elevation = 6.dp
+    ) {
         PlantTrackAndroidTheme {
             Column(modifier = Modifier.padding(24.dp)) {
                 with(plant) {
@@ -85,38 +90,5 @@ private fun PlantCard(plant: Plant) {
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
-//    val plantList = listOf(
-//        Plant(
-//            "Shrimp",
-//            "Echeveria fleur blanc",
-//            "Echeveria fleur blanc",
-//            LocalDate.of(2019, 7, 27),
-//            "Home Depot",
-//            false,
-//            null,
-//            null
-//        ),
-//        Plant(
-//            "Butler",
-//            "Echeveria cubic frost",
-//            "Echeveria cubic frost",
-//            LocalDate.of(2020, 10, 28),
-//            "Gift",
-//            false,
-//            null,
-//            null
-//        ),
-//        Plant(
-//            "Three Musketeers",
-//            "Burros tails",
-//            "Sedum morganianum",
-//            LocalDate.of(2021, 1, 24),
-//            "Gift",
-//            false,
-//            null,
-//            null
-//        )
-//    )
-
 //    ManagePlantsScreen(plants = mutableListOf())
 }

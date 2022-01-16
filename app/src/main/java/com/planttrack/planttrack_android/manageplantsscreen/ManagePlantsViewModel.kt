@@ -59,7 +59,7 @@ class ManagePlantsViewModel @Inject constructor() : ViewModel() {
         plantsList = realm.where<Plant>().findAllAsync()
 
         val plantsChangeListener =
-            OrderedRealmCollectionChangeListener<RealmResults<Plant>> { updatedResult: RealmResults<Plant>, _: OrderedCollectionChangeSet ->
+            OrderedRealmCollectionChangeListener { updatedResult: RealmResults<Plant>, _: OrderedCollectionChangeSet ->
                 Log.i(TAG(), "Fetched new plants data.")
                 plants = updatedResult.freeze()
             }
@@ -79,8 +79,8 @@ class ManagePlantsViewModel @Inject constructor() : ViewModel() {
 
     override fun onCleared() {
         super.onCleared()
-        Log.i(TAG(), "Clearing ManagePlantsViewModel.")
+        Log.i(TAG(), "Clearing ${TAG()}.")
         plantsList.removeAllChangeListeners()
-        realm?.close()
+        realm.close()
     }
 }

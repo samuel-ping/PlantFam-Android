@@ -21,6 +21,8 @@ import com.planttrack.planttrack_android.loginscreen.LoginScreen
 import com.planttrack.planttrack_android.loginscreen.LoginViewModel
 import com.planttrack.planttrack_android.manageplantsscreen.ManagePlantsScreen
 import com.planttrack.planttrack_android.manageplantsscreen.ManagePlantsViewModel
+import com.planttrack.planttrack_android.plantdetailsscreen.PlantDetailsScreen
+import com.planttrack.planttrack_android.plantdetailsscreen.PlantDetailsViewModel
 import com.planttrack.planttrack_android.settingsscreen.SettingsScreen
 import com.planttrack.planttrack_android.settingsscreen.SettingsViewModel
 import com.planttrack.planttrack_android.ui.theme.PlantTrackAndroidTheme
@@ -76,6 +78,10 @@ class MainActivity : ComponentActivity() {
             }
             composable("manageplants") { ManagePlantsDestination(navController) }
             composable("addplant") { AddPlantDestination(navController) }
+            composable("details/{plantId}") { backStackEntry ->
+                backStackEntry.arguments?.getString("plantId")
+                    ?.let { PlantDetailsDestination(it, navController) }
+            }
             composable("settings") { SettingsDestination(navController) }
         }
     }
@@ -99,6 +105,12 @@ class MainActivity : ComponentActivity() {
     fun AddPlantDestination(navController: NavHostController) {
         val addPlantViewModel: AddPlantViewModel = hiltViewModel()
         AddPlantScreen(navController, addPlantViewModel)
+    }
+
+    @Composable
+    fun PlantDetailsDestination(plantId: String, navController: NavHostController) {
+        val plantDetailsViewModel: PlantDetailsViewModel = hiltViewModel()
+        PlantDetailsScreen(plantId, navController, plantDetailsViewModel)
     }
 
     @Composable
