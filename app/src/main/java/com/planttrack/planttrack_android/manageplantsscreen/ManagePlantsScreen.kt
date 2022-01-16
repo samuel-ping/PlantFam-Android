@@ -5,8 +5,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyVerticalGrid
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -16,15 +14,10 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
-import com.planttrack.planttrack_android.plantTrackApp
 import com.planttrack.planttrack_android.service.model.Plant
 import com.planttrack.planttrack_android.ui.components.AddPlantButton
 import com.planttrack.planttrack_android.ui.components.BottomAppBarContent
-import com.planttrack.planttrack_android.ui.components.SavePlantButton
 import com.planttrack.planttrack_android.ui.theme.PlantTrackAndroidTheme
-import io.realm.Realm
-import io.realm.mongodb.User
-import java.time.LocalDate
 
 @ExperimentalMaterialApi
 @ExperimentalFoundationApi

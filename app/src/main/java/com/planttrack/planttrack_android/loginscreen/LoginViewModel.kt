@@ -9,10 +9,7 @@ import androidx.lifecycle.ViewModel
 import com.planttrack.planttrack_android.TAG
 import com.planttrack.planttrack_android.plantTrackApp
 import dagger.hilt.android.lifecycle.HiltViewModel
-import io.realm.Realm
 import io.realm.mongodb.Credentials
-import io.realm.mongodb.User
-import io.realm.mongodb.sync.SyncConfiguration
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import javax.inject.Inject

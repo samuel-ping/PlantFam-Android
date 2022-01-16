@@ -1,16 +1,14 @@
 package com.planttrack.planttrack_android.loginscreen
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
-import com.planttrack.planttrack_android.plantTrackApp
-import com.planttrack.planttrack_android.ui.components.*
-import io.realm.mongodb.User
+import com.planttrack.planttrack_android.ui.components.CreateAccountForm
+import com.planttrack.planttrack_android.ui.components.LoginForm
 import kotlinx.coroutines.CoroutineScope
 
 @Composable

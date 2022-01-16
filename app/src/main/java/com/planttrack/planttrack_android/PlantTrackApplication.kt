@@ -4,7 +4,6 @@ import android.app.Application
 import android.util.Log
 import dagger.hilt.android.HiltAndroidApp
 import io.realm.Realm
-import io.realm.annotations.RealmModule
 import io.realm.log.LogLevel
 import io.realm.log.RealmLog
 import io.realm.mongodb.App

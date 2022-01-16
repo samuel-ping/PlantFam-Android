@@ -6,8 +6,6 @@ import io.realm.annotations.RealmClass
 import io.realm.annotations.RealmField
 import io.realm.annotations.Required
 import org.bson.types.ObjectId
-import java.time.LocalDate
-import java.time.LocalDate.now
 import java.util.*
 
 @RealmClass

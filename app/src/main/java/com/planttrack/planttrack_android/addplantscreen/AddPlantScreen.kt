@@ -11,8 +11,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.planttrack.planttrack_android.service.model.Plant
-import com.planttrack.planttrack_android.ui.components.AddPlantButton
-import com.planttrack.planttrack_android.ui.components.BottomAppBarContent
 import com.planttrack.planttrack_android.ui.components.SavePlantButton
 import com.vanpra.composematerialdialogs.MaterialDialog
 import com.vanpra.composematerialdialogs.datetime.date.datepicker
