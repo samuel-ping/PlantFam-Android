@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -28,40 +29,6 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-    // TODO: Hardcoded data, delete when possible
-//    private val plantList = listOf(
-//        Plant(
-//            "Shrimp",
-//            "Echeveria fleur blanc",
-//            "Echeveria fleur blanc",
-//            LocalDate.of(2019, 7, 27),
-//            "Home Depot",
-//            false,
-//            null,
-//            null
-//        ),
-//        Plant(
-//            "Butler",
-//            "Echeveria cubic frost",
-//            "Echeveria cubic frost",
-//            LocalDate.of(2020, 10, 28),
-//            "Gift",
-//            false,
-//            null,
-//            null
-//        ),
-//        Plant(
-//            "Three Musketeers",
-//            "Burros tails",
-//            "Sedum morganianum",
-//            LocalDate.of(2021, 1, 24),
-//            "Gift",
-//            false,
-//            null,
-//            null
-//        )
-//    )
-
     @ExperimentalMaterialApi
     @ExperimentalFoundationApi
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -79,53 +46,10 @@ class MainActivity : ComponentActivity() {
     @Composable
     fun PlantTrackApp() {
         val navController = rememberNavController()
-        val backstackEntry = navController.currentBackStackEntryAsState()
         val scaffoldState = rememberScaffoldState()
 
-        var canPop by remember { mutableStateOf(false) }
-
-        navController.addOnDestinationChangedListener { controller, _, _ ->
-            canPop = controller.previousBackStackEntry != null
-        }
-
         Surface(color = MaterialTheme.colors.background) {
-            Scaffold(
-                topBar = {
-                    TopAppBar(
-                        title = {
-                            when (backstackEntry.value?.destination?.route) {
-                                "login" -> Text("Log In")
-                                "manageplants" -> Text("My Plants")
-                                "addplant" -> Text("Add Plant")
-                                "settings" -> Text("Settings")
-                            }
-                        },
-                        navigationIcon =
-                        if (backstackEntry.value?.destination?.route == "addplant") {
-                            {
-                                IconButton(
-                                    onClick = { navController.navigateUp() }
-                                ) {
-                                    Icon(
-                                        imageVector = Icons.Filled.Close,
-                                        contentDescription = "Close add plant screen"
-                                    )
-                                }
-                            }
-                        } else null
-                    )
-                },
-                bottomBar = { BottomAppBarContent(navController) },
-                floatingActionButton = {
-                    when (backstackEntry.value?.destination?.route) {
-                        "manageplants" -> AddPlantButton(navController)
-                        "addplant" -> SavePlantButton(navController)
-                    }
-                },
-                scaffoldState = scaffoldState,
-            ) {
-                PlantNavHost(navController, scaffoldState)
-            }
+            PlantNavHost(navController, scaffoldState)
         }
     }
 
@@ -143,9 +67,9 @@ class MainActivity : ComponentActivity() {
                     scaffoldState = scaffoldState
                 )
             }
-            composable("manageplants") { ManagePlantsDestination() }
-            composable("addplant") { AddPlantScreen() }
-            composable("settings") { SettingsDestination(navController = navController) }
+            composable("manageplants") { ManagePlantsDestination(navController) }
+            composable("addplant") { AddPlantDestination(navController) }
+            composable("settings") { SettingsDestination(navController) }
         }
     }
 
@@ -159,14 +83,15 @@ class MainActivity : ComponentActivity() {
     @ExperimentalFoundationApi
     @ExperimentalMaterialApi
     @Composable
-    fun ManagePlantsDestination() {
-        val managePlantViewModel: ManagePlantsViewModel = hiltViewModel()
-        ManagePlantsScreen(managePlantViewModel)
+    fun ManagePlantsDestination(navController: NavHostController) {
+        val managePlantsViewModel: ManagePlantsViewModel = hiltViewModel()
+        ManagePlantsScreen(navController, managePlantsViewModel)
     }
 
     @Composable
     fun AddPlantDestination(navController: NavHostController) {
-        val viewModel: AddPlantViewModel = hiltViewModel()
+        val addPlantViewModel: AddPlantViewModel = hiltViewModel()
+        AddPlantScreen(navController, addPlantViewModel)
     }
 
     @Composable
