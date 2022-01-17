@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.planttrack.planttrack_android">
+    package="com.plantfam.plantfam">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:name=".PlantTrackApplication"
+        android:name="com.plantfam.plantfam.PlantFamApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.PlanTrackAndroid">
+        android:theme="@style/Theme.PlantFam">
+<!--        <activity-->
+<!--            android:name="com.plantfam.plantfam.ui.components.PlantCard"-->
+<!--            android:exported="false"-->
+<!--            android:label="@string/title_activity_plant_card"-->
+<!--            android:theme="@style/Theme.PlantFam.NoActionBar" />-->
         <activity
-            android:name=".ui.components.PlantCard"
-            android:exported="false"
-            android:label="@string/title_activity_plant_card"
-            android:theme="@style/Theme.PlanTrackAndroid.NoActionBar" />
-        <activity
-            android:name=".MainActivity"
+            android:name="com.plantfam.plantfam.MainActivity"
             android:exported="true"
             android:label="@string/app_name"
-            android:theme="@style/Theme.PlantTrackAndroid.NoActionBar">
+            android:theme="@style/Theme.PlantFam.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

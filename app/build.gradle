@@ -1,7 +1,5 @@
 // https://docs.mongodb.com/realm/sdk/android/install/
-//apply plugin: 'kotlin-kapt'
-//apply plugin: 'realm-android'
-
+// https://docs.amplify.aws/lib/project-setup/create-application/q/platform/android/
 plugins {
     id 'com.android.application'
     id("dagger.hilt.android.plugin")
@@ -14,7 +12,7 @@ android {
     compileSdk 31
 
     defaultConfig {
-        applicationId "com.example.plantrack_android"
+        applicationId "com.plantfam.plantfam"
         minSdk 30
         targetSdk 31
         versionCode 1
@@ -42,6 +40,8 @@ android {
         }
     }
     compileOptions {
+        // Support for Java 8 features
+        coreLibraryDesugaringEnabled true
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
@@ -88,6 +88,12 @@ dependencies {
     implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.4.0'
     implementation 'androidx.activity:activity-compose:1.4.0'
+
+    // Amplify core dependency
+    implementation 'com.amplifyframework:core:1.31.1'
+
+    // Support for Java 8 features
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5'
 
     // Accompanist
     implementation "com.google.accompanist:accompanist-navigation-animation:0.22.0-rc"
