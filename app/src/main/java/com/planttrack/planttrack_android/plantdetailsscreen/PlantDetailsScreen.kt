@@ -28,14 +28,6 @@ fun PlantDetailsScreen(plantId: String, navController: NavHostController, viewMo
         },
     ) {
         Column {
-//            plant?.apply {
-//                this.nickname?.let { it -> Text(it) }
-//                this.commonName?.let { it -> Text(it) }
-//                this.scientificName?.let { it -> Text(it) }
-//                this.adoptionDate?.let { it -> Text(it.toString()) }
-//                this.adoptedFrom?.let { it -> Text(it) }
-//                this.isDeceased?.let { it -> Text(it.toString()) }
-//            }
             with(plant!!) {
                 nickname?.let { it1 -> Text(it1) }
                 commonName?.let { it -> Text(it) }

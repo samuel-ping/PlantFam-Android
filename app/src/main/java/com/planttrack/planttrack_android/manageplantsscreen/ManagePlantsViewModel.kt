@@ -71,7 +71,6 @@ class ManagePlantsViewModel @Inject constructor() : ViewModel() {
         Log.i(TAG(), "Refreshing plants.")
         viewModelScope.launch {
             _isRefreshing.emit(true)
-            delay(1000) // TODO: Delete this lol
             getPlants()
             _isRefreshing.emit(false)
         }

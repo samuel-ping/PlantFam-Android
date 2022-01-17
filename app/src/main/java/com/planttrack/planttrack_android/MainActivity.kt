@@ -51,9 +51,7 @@ class MainActivity : ComponentActivity() {
         val navController = rememberAnimatedNavController()
         val scaffoldState = rememberScaffoldState()
 
-        Surface(color = MaterialTheme.colors.background) {
-            PlantNavHost(navController, scaffoldState)
-        }
+        PlantNavHost(navController, scaffoldState)
     }
 
     @ExperimentalAnimationApi

@@ -17,6 +17,7 @@ import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.planttrack.planttrack_android.service.model.Plant
 import com.planttrack.planttrack_android.ui.components.AddPlantButton
 import com.planttrack.planttrack_android.ui.components.BottomAppBarContent
+import com.planttrack.planttrack_android.ui.components.PlantCard
 import com.planttrack.planttrack_android.ui.theme.PlantTrackAndroidTheme
 
 @ExperimentalMaterialApi
@@ -52,35 +53,14 @@ private fun PlantCardGrid(plants: List<Plant>, navController: NavHostController)
         contentPadding = PaddingValues(8.dp)
     ) {
         items(plants.size) { plant ->
-            PlantCard(plants[plant], onClick = {
-                navController.navigate("details/${plants[plant].id}")
-            }) // TODO: plants[plant] seems wrong?
-        }
-    }
-}
-
-@ExperimentalMaterialApi
-@Composable
-private fun PlantCard(plant: Plant, onClick: () -> Unit) {
-    Card(
-        onClick = { onClick() },
-        elevation = 6.dp
-    ) {
-        PlantTrackAndroidTheme {
-            Column(modifier = Modifier.padding(24.dp)) {
-                with(plant) {
-                    nickname?.let {
-                        Text(
-                            text = it,
-                            color = MaterialTheme.colors.secondaryVariant,
-                            style = MaterialTheme.typography.h5
-                        )
-                    }
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(text = "the $commonName.", style = MaterialTheme.typography.subtitle1)
-                }
-
-            }
+            PlantCard(
+                plants[plant],
+                onClick = {
+                    navController.navigate("details/${plants[plant].id}")
+                },
+                onEdit = {},
+                onDelete = {}
+            ) // TODO: plants[plant] seems unnecessary?
         }
     }
 }
