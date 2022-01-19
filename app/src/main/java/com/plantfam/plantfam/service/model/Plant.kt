@@ -26,7 +26,7 @@ open class Plant(
     var isDeceased: Boolean? = null,
     var deceasedDate: Date? = null,
     var parent: Plant? = null,
-    var coverPhoto: String? = null,
+    var coverPhoto: String = "",
     var photos: RealmList<ProgressPhoto> = RealmList()
 ) : RealmObject() {
     @PrimaryKey
