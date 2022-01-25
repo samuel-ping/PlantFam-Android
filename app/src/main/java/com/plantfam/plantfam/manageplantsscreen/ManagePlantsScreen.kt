@@ -1,5 +1,6 @@
 package com.plantfam.plantfam.manageplantsscreen
 
+import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.GridCells
@@ -11,8 +12,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.amplifyframework.core.Amplify
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
+import com.plantfam.plantfam.TAG
 import com.plantfam.plantfam.service.model.Plant
 import com.plantfam.plantfam.ui.components.AddPlantButton
 import com.plantfam.plantfam.ui.components.BottomAppBarContent
@@ -23,6 +26,12 @@ import com.plantfam.plantfam.ui.components.PlantCard
 @Composable
 fun ManagePlantsScreen(navController: NavHostController, viewModel: ManagePlantsViewModel) {
     val isRefreshing by viewModel.isRefreshing.collectAsState()
+
+    // Redirect to login page is user is not logged in.
+    Amplify.Auth.fetchAuthSession(
+        { if(!it.isSignedIn) navController.navigate("login") },
+        { Log.e("ManagePlantsScreen", "Failed to fetch auth session.")}
+    )
 
     Scaffold(
         topBar = {
@@ -35,7 +44,9 @@ fun ManagePlantsScreen(navController: NavHostController, viewModel: ManagePlants
     ) {
         SwipeRefresh(
             state = rememberSwipeRefreshState(isRefreshing),
-            onRefresh = { viewModel.refresh() }
+            onRefresh = {
+//                viewModel.refresh()
+            }
         ) {
             PlantCardGrid(viewModel.plants, navController)
         }

@@ -17,6 +17,8 @@ import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.plantfam.plantfam.addplantscreen.AddPlantScreen
 import com.plantfam.plantfam.addplantscreen.AddPlantViewModel
+import com.plantfam.plantfam.emailconfirmationscreen.EmailConfirmationScreen
+import com.plantfam.plantfam.emailconfirmationscreen.EmailConfirmationViewModel
 import com.plantfam.plantfam.loginscreen.LoginScreen
 import com.plantfam.plantfam.loginscreen.LoginViewModel
 import com.plantfam.plantfam.manageplantsscreen.ManagePlantsScreen
@@ -61,18 +63,18 @@ class MainActivity : ComponentActivity() {
     fun PlantNavHost(navController: NavHostController, scaffoldState: ScaffoldState) {
         AnimatedNavHost(
             navController = navController,
-            startDestination = if (plantFamApp.currentUser() == null) "login" else "manageplants",
+            startDestination = "login",
             // Disable animations between screen transitions.
             enterTransition = { EnterTransition.None },
             exitTransition = { ExitTransition.None },
             popEnterTransition = { EnterTransition.None },
             popExitTransition = { ExitTransition.None },
         ) {
-            composable("login") {
-                LoginDestination(
-                    navController = navController,
-                    scaffoldState = scaffoldState
-                )
+            composable("login") { LoginDestination(navController, scaffoldState) }
+            composable("emailconfirmation/{email}") { backStackEntry ->
+                backStackEntry.arguments?.getString("email")?.let {
+                    EmailConfirmationDestination(it, navController, scaffoldState)
+                }
             }
             composable("manageplants") { ManagePlantsDestination(navController) }
             composable("addplant") { AddPlantDestination(navController) }
@@ -89,6 +91,23 @@ class MainActivity : ComponentActivity() {
         val loginViewModel: LoginViewModel = hiltViewModel()
         var scope = rememberCoroutineScope()
         LoginScreen(navController, scaffoldState, scope, loginViewModel)
+    }
+
+    @Composable
+    fun EmailConfirmationDestination(
+        email: String,
+        navController: NavHostController,
+        scaffoldState: ScaffoldState
+    ) {
+        val emailConfirmationViewModel: EmailConfirmationViewModel = hiltViewModel()
+        var scope = rememberCoroutineScope()
+        EmailConfirmationScreen(
+            email,
+            navController,
+            scaffoldState,
+            scope,
+            emailConfirmationViewModel
+        )
     }
 
     @ExperimentalFoundationApi

@@ -1,13 +1,15 @@
 {
   "auth": {
-    "plantfam213628a1": {
+    "plantfam9996b41b": {
       "service": "Cognito",
       "providerPlugin": "awscloudformation",
       "dependsOn": [],
       "customAuth": false,
       "frontendAuthConfig": {
         "socialProviders": [],
-        "usernameAttributes": [],
+        "usernameAttributes": [
+          "EMAIL"
+        ],
         "signupAttributes": [
           "EMAIL"
         ],
@@ -23,13 +25,6 @@
           "EMAIL"
         ]
       }
-    }
-  },
-  "storage": {
-    "plantphotos": {
-      "service": "S3",
-      "providerPlugin": "awscloudformation",
-      "dependsOn": []
     }
   }
 }

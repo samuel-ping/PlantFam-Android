@@ -17,7 +17,6 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun CreateAccountForm(
-    isEnabled: Boolean,
     email: String,
     password: String,
     onEmailChange: (String) -> Unit,
@@ -39,7 +38,6 @@ fun CreateAccountForm(
             value = email,
             label = { Text(text = "email") },
             onValueChange = onEmailChange,
-            enabled = isEnabled,
             keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() })
         )
 
@@ -48,7 +46,6 @@ fun CreateAccountForm(
             label = { Text(text = "password") },
             onValueChange = onPasswordChange,
             visualTransformation = PasswordVisualTransformation(),
-            enabled = isEnabled,
             keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() })
         )
 

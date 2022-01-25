@@ -15,6 +15,10 @@
 .cxx
 local.properties
 
+
+# amplify install script? Not sure where it came from
+install.cmd
+
 #amplify-do-not-edit-begin
 amplify/\#current-cloud-backend
 amplify/.config/local-*
@@ -35,6 +39,3 @@ amplifytools.xcconfig
 .secret-*
 **.sample
 #amplify-do-not-edit-end
-
-# amplify install script? Not sure where it came from
-install.cmd

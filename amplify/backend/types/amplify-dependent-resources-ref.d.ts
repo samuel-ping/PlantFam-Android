@@ -1,6 +1,6 @@
 export type AmplifyDependentResourcesAttributes = {
     "auth": {
-        "plantfam213628a1": {
+        "plantfam9996b41b": {
             "IdentityPoolId": "string",
             "IdentityPoolName": "string",
             "UserPoolId": "string",
@@ -8,12 +8,6 @@ export type AmplifyDependentResourcesAttributes = {
             "UserPoolName": "string",
             "AppClientIDWeb": "string",
             "AppClientID": "string"
-        }
-    },
-    "storage": {
-        "plantphotos": {
-            "BucketName": "string",
-            "Region": "string"
         }
     }
 }
