@@ -20,10 +20,8 @@ fun SettingsScreen(navController: NavHostController, viewModel: SettingsViewMode
             TopAppBar(
                 title = {
                     Text("Settings")
-
                 },
-
-                )
+            )
         },
         bottomBar = { BottomAppBarContent(navController) },
     ) {
