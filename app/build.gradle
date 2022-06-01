@@ -89,8 +89,13 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.4.0'
     implementation 'androidx.activity:activity-compose:1.4.0'
 
+    // KTX ViewModel Coroutine scope
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
+
     // Amplify core dependency
     implementation 'com.amplifyframework:core:1.31.1'
+    // Amplify Kotlin core dependency
+    implementation 'com.amplifyframework:core-kotlin:0.19.4'
     // Amplify Cognito
     implementation 'com.amplifyframework:aws-auth-cognito:1.31.1'
 
