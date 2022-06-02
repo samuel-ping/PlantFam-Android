@@ -1,4 +1,4 @@
 <resources>
-    <string name="app_name">PlantTrack</string>
+    <string name="app_name">PlantFam</string>
     <string name="title_activity_plant_card">PlantCard</string>
 </resources>
