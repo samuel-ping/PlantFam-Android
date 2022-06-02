@@ -41,7 +41,10 @@ class ManagePlantsViewModel @Inject constructor() : ViewModel() {
 
     private fun instantiateSyncedRealm() {
 //        val config = SyncConfiguration.Builder(user = user!!,  partitionValue = "user=${user!!.id}").build()
-        val config = SyncConfiguration.defaultConfig(user!!, "${user!!.id}")
+        val config = SyncConfiguration.defaultConfig(
+            user!!,
+            user!!.id
+        )
         Log.d(TAG(), "Config: partitionValue=${user!!.id}")
 //        syncedRealm = Realm.getInstance(config)
         // Sync all realm changes via a new instance, and when that instance has been successfully created connect it to an on-screen list (a recycler view)

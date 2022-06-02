@@ -35,39 +35,6 @@ class EmailConfirmationViewModel @Inject constructor() : ViewModel() {
         )
     }
 
-    /**
-     * Logs in user.
-     */
-    fun login(
-        username: String,
-        password: String,
-        onSuccess: () -> Unit,
-        scaffoldState: ScaffoldState,
-        scope: CoroutineScope
-    ) {
-        Amplify.Auth.signIn(username, password,
-            { result ->
-                if (result.isSignInComplete) {
-                    Log.i(TAG(), "User successfully logged in.")
-                    onSuccess()
-                } else {
-                    displaySnackbar("Failed to log in.", scaffoldState, scope)
-                    Log.e(TAG(), "Failed to log in.")
-                }
-            },
-            {
-                Log.e(TAG(), "Failed to sign in:", it)
-                displaySnackbar("Failed to log in: ${it.message}", scaffoldState, scope)
-            }
-        )
-    }
-
-    private fun validCredentials(username: String, password: String): Boolean = when {
-        // zero-length usernames and passwords are not valid (or secure), so prevent users from creating accounts with those client-side.
-        username.isEmpty() || password.isEmpty() -> false
-        else -> true
-    }
-
     private fun displaySnackbar(
         errorMessage: String,
         scaffoldState: ScaffoldState,
