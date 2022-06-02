@@ -1,0 +1,14 @@
+{
+  "resourceName": "PlantImages",
+  "policyUUID": "df106ce7",
+  "bucketName": "plantfam9f5d83da84ec4860a6bd8f6abf3668f6",
+  "storageAccess": "auth",
+  "guestAccess": [],
+  "authAccess": [
+    "CREATE_AND_UPDATE",
+    "READ",
+    "DELETE"
+  ],
+  "triggerFunction": "NONE",
+  "groupAccess": {}
+}

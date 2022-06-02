@@ -23,17 +23,20 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.documentfile.provider.DocumentFile
 import androidx.navigation.NavHostController
 import coil.compose.ImagePainter
 import coil.compose.rememberImagePainter
 import coil.transform.CircleCropTransformation
 import com.plantfam.plantfam.R
 import com.plantfam.plantfam.TAG
+import com.plantfam.plantfam.plantFamApp
 import com.plantfam.plantfam.service.model.Plant
 import com.plantfam.plantfam.ui.components.SavePlantButton
 import com.vanpra.composematerialdialogs.MaterialDialog
 import com.vanpra.composematerialdialogs.datetime.date.datepicker
 import com.vanpra.composematerialdialogs.rememberMaterialDialogState
+import java.io.File
 import java.time.LocalDate
 import java.time.ZoneId
 import java.util.*
@@ -79,21 +82,23 @@ fun AddPlantScreen(navController: NavHostController, viewModel: AddPlantViewMode
                     val defaultZoneId: ZoneId = ZoneId.systemDefault()
 
                     val plant = Plant(
-                        viewModel.user!!.id,
-                        if (nickname.isBlank()) null else nickname,
-                        if (commonName.isBlank()) null else commonName,
-                        if (scientificName.isBlank()) null else scientificName,
-                        Date.from(adoptionDate.atStartOfDay(defaultZoneId).toInstant()),
-                        if (adoptedFrom.isBlank()) null else adoptedFrom,
-                        isDeceased == "Yes",
-                        if (isDeceased == "Yes") Date.from(
+                        _partition = viewModel.user!!.id,
+                        nickname = if (nickname.isBlank()) null else nickname,
+                        commonName = if (commonName.isBlank()) null else commonName,
+                        scientificName = if (scientificName.isBlank()) null else scientificName,
+                        adoptionDate = Date.from(
+                            adoptionDate.atStartOfDay(defaultZoneId).toInstant()
+                        ),
+                        adoptedFrom = if (adoptedFrom.isBlank()) null else adoptedFrom,
+                        isDeceased = isDeceased == "Yes",
+                        deceasedDate = if (isDeceased == "Yes") Date.from(
                             deceasedDate.atStartOfDay(defaultZoneId).toInstant()
                         ) else null,
-                        null,
-                        coverPhoto
+                        parent = null,
+                        coverPhoto = if(coverPhoto.isBlank()) null else coverPhoto
                     )
 
-                    if (plant != null) viewModel.addPlant(plant)
+                    viewModel.addPlant(plant)
 
                     navController.navigateUp()
                 }

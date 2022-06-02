@@ -10,7 +10,9 @@ import io.realm.mongodb.App
 import io.realm.mongodb.AppConfiguration
 import com.amplifyframework.AmplifyException
 import com.amplifyframework.auth.cognito.AWSCognitoAuthPlugin
-import com.amplifyframework.core.Amplify
+//import com.amplifyframework.core.Amplify
+import com.amplifyframework.kotlin.core.Amplify
+import com.amplifyframework.storage.s3.AWSS3StoragePlugin
 
 lateinit var plantFamApp: App
 
@@ -43,6 +45,7 @@ class PlantFamApplication : Application() {
         // Initialize the Amplify SDK
         try {
             Amplify.addPlugin(AWSCognitoAuthPlugin())
+            Amplify.addPlugin(AWSS3StoragePlugin())
             Amplify.configure(applicationContext)
             Log.i(TAG(), "Initialized Amplify")
         } catch (error: AmplifyException) {
