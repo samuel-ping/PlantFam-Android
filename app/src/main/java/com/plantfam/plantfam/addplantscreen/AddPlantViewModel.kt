@@ -8,6 +8,7 @@ import androidx.documentfile.provider.DocumentFile
 import androidx.lifecycle.ViewModel
 import com.amplifyframework.core.Amplify
 import com.amplifyframework.storage.StorageAccessLevel
+import com.amplifyframework.storage.options.StorageUploadFileOptions
 import com.amplifyframework.storage.options.StorageUploadInputStreamOptions
 import com.plantfam.plantfam.TAG
 import com.plantfam.plantfam.plantFamApp
@@ -63,7 +64,11 @@ class AddPlantViewModel @Inject constructor(
         val coverPhotoInputStream: InputStream? =
             application.contentResolver.openInputStream(Uri.parse(plant.coverPhoto))
 
-        Amplify.Storage.uploadInputStream(uploadKey, coverPhotoInputStream!!,
+        val options = StorageUploadInputStreamOptions.builder()
+            .accessLevel(StorageAccessLevel.PRIVATE)
+            .build()
+
+        Amplify.Storage.uploadInputStream(uploadKey, coverPhotoInputStream!!, options,
             { storageUploadInputStreamResult ->
                 Log.i(TAG(), "Cover photo uploaded: ${storageUploadInputStreamResult.key}")
 
