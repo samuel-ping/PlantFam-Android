@@ -38,7 +38,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ManagePlantsViewModel @Inject constructor(
         @SuppressLint("StaticFieldLeak") @ApplicationContext private val application: Context, // No memory leaks here: https://stackoverflow.com/a/66217924/13026376
-    ) : ViewModel() {
+) : ViewModel() {
     private val _isRefreshing = MutableStateFlow(false)
     val isRefreshing: StateFlow<Boolean>
         get() = _isRefreshing.asStateFlow()
@@ -110,17 +110,6 @@ class ManagePlantsViewModel @Inject constructor(
             { Log.v(TAG(), "Image successfully downloaded.") },
             { Log.e(TAG(), "Failed download", it) }
         )
-
-//        val options = StorageGetUrlOptions.builder()
-//            .accessLevel(StorageAccessLevel.PRIVATE)
-//            .build()
-//
-//        Amplify.Storage.getUrl(s3Key, options,
-//            {
-//                Log.i(TAG(), "Successfully generated: ${it.url}")
-//            },
-//            { Log.e(TAG(), "URL generation failure: ", it) }
-//        )
     }
 
     fun refresh() {
