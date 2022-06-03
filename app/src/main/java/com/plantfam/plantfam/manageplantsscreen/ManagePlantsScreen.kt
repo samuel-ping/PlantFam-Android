@@ -1,5 +1,6 @@
 package com.plantfam.plantfam.manageplantsscreen
 
+import android.content.Context
 import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
@@ -9,13 +10,13 @@ import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.amplifyframework.core.Amplify
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
-import com.plantfam.plantfam.TAG
 import com.plantfam.plantfam.service.model.Plant
 import com.plantfam.plantfam.ui.components.AddPlantButton
 import com.plantfam.plantfam.ui.components.BottomAppBarContent
@@ -26,6 +27,7 @@ import com.plantfam.plantfam.ui.components.PlantCard
 @Composable
 fun ManagePlantsScreen(navController: NavHostController, viewModel: ManagePlantsViewModel) {
     val isRefreshing by viewModel.isRefreshing.collectAsState()
+    val applicationContext = LocalContext.current.applicationContext
 
     // Redirect to login page is user is not logged in.
     Amplify.Auth.fetchAuthSession(
@@ -45,10 +47,10 @@ fun ManagePlantsScreen(navController: NavHostController, viewModel: ManagePlants
         SwipeRefresh(
             state = rememberSwipeRefreshState(isRefreshing),
             onRefresh = {
-//                viewModel.refresh()
+                viewModel.refresh()
             }
         ) {
-            PlantCardGrid(viewModel.plants, navController)
+            PlantCardGrid(viewModel.plants, applicationContext, navController)
         }
     }
 }
@@ -56,7 +58,7 @@ fun ManagePlantsScreen(navController: NavHostController, viewModel: ManagePlants
 @ExperimentalMaterialApi
 @ExperimentalFoundationApi
 @Composable
-private fun PlantCardGrid(plants: List<Plant>, navController: NavHostController) {
+private fun PlantCardGrid(plants: List<Plant>, applicationContext: Context, navController: NavHostController) {
     LazyVerticalGrid(
         cells = GridCells.Fixed(count = 2),
         contentPadding = PaddingValues(8.dp)

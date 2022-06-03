@@ -11,12 +11,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import coil.compose.ImagePainter
 import coil.compose.rememberImagePainter
 import coil.transform.CircleCropTransformation
 import com.plantfam.plantfam.R
+import java.io.File
 
 @Composable
 fun PlantDetailsScreen(
@@ -24,6 +26,8 @@ fun PlantDetailsScreen(
     navController: NavHostController,
     viewModel: PlantDetailsViewModel
 ) {
+    val applicationContext = LocalContext.current.applicationContext
+
     val plant = viewModel.getPlant(plantId)
 
     Scaffold(
@@ -66,13 +70,13 @@ fun PlantDetailsScreen(
                     } else {
                         Image(
                             painter = rememberImagePainter(
-                                data = "g",
+                                data = File("${applicationContext.filesDir}/${plant.coverPhoto}"),
                                 builder = {
                                     transformations(CircleCropTransformation())
                                     // TODO: Add placeholder
                                 }
                             ),
-                            contentDescription = null,
+                            contentDescription = "Photo of ${plant.nickname} the ${plant.scientificName}.",
                             contentScale = ContentScale.Crop,
                             modifier = Modifier.size(128.dp)
                         )

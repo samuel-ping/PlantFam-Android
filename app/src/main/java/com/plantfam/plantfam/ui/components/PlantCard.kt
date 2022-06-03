@@ -1,5 +1,7 @@
 package com.plantfam.plantfam.ui.components
 
+import android.util.Log
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
@@ -9,14 +11,20 @@ import androidx.compose.material.icons.filled.Edit
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import coil.compose.rememberImagePainter
 import com.plantfam.plantfam.service.model.Plant
+import java.io.File
 
 const val MaterialIconDimension = 24f
 
 @ExperimentalMaterialApi
 @Composable
 fun PlantCard(plant: Plant, onClick: () -> Unit, onEdit: () -> Unit, onDelete: () -> Unit) {
+    val applicationContext = LocalContext.current.applicationContext
+
     var dropdownMenuExpanded by remember { mutableStateOf(false) }
 
     Card(
@@ -30,6 +38,12 @@ fun PlantCard(plant: Plant, onClick: () -> Unit, onEdit: () -> Unit, onDelete: (
     ) {
         Column(modifier = Modifier.padding(24.dp)) {
             with(plant) {
+                Image(
+                    painter = rememberImagePainter(File("${applicationContext.filesDir}/${plant.coverPhoto}")),
+                    contentDescription = "Photo of ${plant.nickname} the ${plant.scientificName}.",
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier.size(128.dp)
+                )
                 nickname?.let {
                     Text(
                         text = it,
