@@ -68,6 +68,8 @@ fun ManagePlantsScreen(navController: NavHostController, viewModel: ManagePlants
 
                     ConfirmationDialog(
                         show = showDeletePlantConfirmationDialog,
+                        title = "Permanently Delete ${plants[plant].nickname}?",
+                        description = "Are you sure you want to delete ${plants[plant].nickname}? If this plant has passed away, you can move it to the graveyard instead of deleting it.",
                         onDismiss = { showDeletePlantConfirmationDialog = false },
                         onConfirm = {
                             viewModel.deletePlant(plants[plant])

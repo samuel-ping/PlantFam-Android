@@ -6,6 +6,8 @@ import androidx.compose.runtime.Composable
 @Composable
 fun ConfirmationDialog(
     show: Boolean,
+    title: String,
+    description: String,
     onDismiss: () -> Unit,
     onConfirm: () -> Unit
 ) {
@@ -20,8 +22,8 @@ fun ConfirmationDialog(
                 TextButton(onClick = onDismiss)
                 { Text(text = "Cancel") }
             },
-            title = { Text(text = "Delete Plant?") },
-            text = { Text(text = "Are you sure you want to delete this plant?") }
+            title = { Text(text = title) },
+            text = { Text(text = description) }
         )
     }
 }
