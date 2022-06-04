@@ -1,4 +1,4 @@
-package com.plantfam.plantfam.addplantscreen
+package com.plantfam.plantfam.ui.screens.addplantscreen
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -8,11 +8,10 @@ import androidx.documentfile.provider.DocumentFile
 import androidx.lifecycle.ViewModel
 import com.amplifyframework.core.Amplify
 import com.amplifyframework.storage.StorageAccessLevel
-import com.amplifyframework.storage.options.StorageUploadFileOptions
 import com.amplifyframework.storage.options.StorageUploadInputStreamOptions
 import com.plantfam.plantfam.TAG
 import com.plantfam.plantfam.plantFamApp
-import com.plantfam.plantfam.service.model.Plant
+import com.plantfam.plantfam.network.model.Plant
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import io.realm.Realm

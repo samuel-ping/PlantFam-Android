@@ -1,4 +1,4 @@
-package com.plantfam.plantfam.plantdetailsscreen
+package com.plantfam.plantfam.ui.screens.plantdetailsscreen
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image

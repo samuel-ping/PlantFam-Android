@@ -1,4 +1,4 @@
-package com.plantfam.plantfam.emailconfirmationscreen
+package com.plantfam.plantfam.ui.screens.emailconfirmationscreen
 
 import android.util.Log
 import androidx.compose.material.ScaffoldState

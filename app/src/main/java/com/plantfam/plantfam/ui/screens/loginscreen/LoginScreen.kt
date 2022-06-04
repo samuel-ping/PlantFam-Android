@@ -1,20 +1,15 @@
-package com.plantfam.plantfam.loginscreen
+package com.plantfam.plantfam.ui.screens.loginscreen
 
 import android.annotation.SuppressLint
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.navigation.NavHostController
-import com.amazonaws.mobile.auth.core.internal.util.ThreadUtils
-import com.amplifyframework.core.Amplify
 import com.plantfam.plantfam.ui.components.CreateAccountForm
 import com.plantfam.plantfam.ui.components.LoginForm
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 
 @SuppressLint("CoroutineCreationDuringComposition")
 @Composable

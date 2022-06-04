@@ -1,4 +1,4 @@
-package com.plantfam.plantfam.settingsscreen
+package com.plantfam.plantfam.ui.screens.settingsscreen
 
 import android.util.Log
 import androidx.lifecycle.ViewModel

@@ -1,10 +1,10 @@
-package com.plantfam.plantfam.plantdetailsscreen
+package com.plantfam.plantfam.ui.screens.plantdetailsscreen
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.plantfam.plantfam.TAG
 import com.plantfam.plantfam.plantFamApp
-import com.plantfam.plantfam.service.model.Plant
+import com.plantfam.plantfam.network.model.Plant
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.realm.Realm
 import io.realm.kotlin.where

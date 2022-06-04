@@ -1,4 +1,4 @@
-package com.plantfam.plantfam.service.model
+package com.plantfam.plantfam.network.model
 
 import io.realm.RealmList
 import io.realm.RealmObject

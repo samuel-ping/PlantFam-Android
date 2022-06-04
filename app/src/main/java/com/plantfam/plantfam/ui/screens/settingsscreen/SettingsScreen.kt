@@ -1,4 +1,4 @@
-package com.plantfam.plantfam.settingsscreen
+package com.plantfam.plantfam.ui.screens.settingsscreen
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.padding

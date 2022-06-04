@@ -1,6 +1,5 @@
-package com.plantfam.plantfam.manageplantsscreen
+package com.plantfam.plantfam.ui.screens.manageplantsscreen
 
-import android.content.Context
 import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
@@ -15,7 +14,6 @@ import androidx.navigation.NavHostController
 import com.amplifyframework.core.Amplify
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
-import com.plantfam.plantfam.service.model.Plant
 import com.plantfam.plantfam.ui.components.AddPlantButton
 import com.plantfam.plantfam.ui.components.BottomAppBarContent
 import com.plantfam.plantfam.ui.components.ConfirmationDialog

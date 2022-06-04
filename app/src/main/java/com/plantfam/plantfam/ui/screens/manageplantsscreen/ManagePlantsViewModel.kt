@@ -1,4 +1,4 @@
-package com.plantfam.plantfam.manageplantsscreen
+package com.plantfam.plantfam.ui.screens.manageplantsscreen
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -15,7 +15,7 @@ import com.amplifyframework.storage.options.StorageDownloadFileOptions
 import com.amplifyframework.storage.options.StorageRemoveOptions
 import com.plantfam.plantfam.TAG
 import com.plantfam.plantfam.plantFamApp
-import com.plantfam.plantfam.service.model.Plant
+import com.plantfam.plantfam.network.model.Plant
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import io.realm.*

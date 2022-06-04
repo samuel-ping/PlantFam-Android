@@ -1,4 +1,4 @@
-package com.plantfam.plantfam.loginscreen
+package com.plantfam.plantfam.ui.screens.loginscreen
 
 import android.util.Log
 import androidx.compose.material.ScaffoldState

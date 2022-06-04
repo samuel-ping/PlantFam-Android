@@ -1,4 +1,4 @@
-package com.plantfam.plantfam.emailconfirmationscreen
+package com.plantfam.plantfam.ui.screens.emailconfirmationscreen
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth

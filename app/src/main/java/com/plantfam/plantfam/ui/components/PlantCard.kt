@@ -1,6 +1,5 @@
 package com.plantfam.plantfam.ui.components
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
@@ -15,7 +14,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberImagePainter
-import com.plantfam.plantfam.service.model.Plant
+import com.plantfam.plantfam.network.model.Plant
 import java.io.File
 
 const val MaterialIconDimension = 24f
