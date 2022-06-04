@@ -7,21 +7,17 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.neverEqualPolicy
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.amplifyframework.core.Amplify
 import com.amplifyframework.storage.StorageAccessLevel
-import com.amplifyframework.storage.StorageException
 import com.amplifyframework.storage.options.StorageDownloadFileOptions
-import com.amplifyframework.storage.options.StorageGetUrlOptions
+import com.amplifyframework.storage.options.StorageRemoveOptions
 import com.plantfam.plantfam.TAG
 import com.plantfam.plantfam.plantFamApp
 import com.plantfam.plantfam.service.model.Plant
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
-import hilt_aggregated_deps._dagger_hilt_android_internal_modules_ApplicationContextModule
 import io.realm.*
 import io.realm.kotlin.where
 import io.realm.mongodb.User
@@ -30,14 +26,12 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.io.File
-import java.net.URL
 import javax.inject.Inject
 
 @HiltViewModel
 class ManagePlantsViewModel @Inject constructor(
-        @SuppressLint("StaticFieldLeak") @ApplicationContext private val application: Context, // No memory leaks here: https://stackoverflow.com/a/66217924/13026376
+    @SuppressLint("StaticFieldLeak") @ApplicationContext private val application: Context, // No memory leaks here: https://stackoverflow.com/a/66217924/13026376
 ) : ViewModel() {
     private val _isRefreshing = MutableStateFlow(false)
     val isRefreshing: StateFlow<Boolean>
@@ -70,6 +64,15 @@ class ManagePlantsViewModel @Inject constructor(
         })
     }
 
+    fun refresh() {
+        Log.i(TAG(), "Refreshing plants.")
+        viewModelScope.launch {
+            _isRefreshing.emit(true)
+            getPlants()
+            _isRefreshing.emit(false)
+        }
+    }
+
     private fun getPlants() {
         plantsList = realm.where<Plant>().findAllAsync()
 
@@ -92,7 +95,7 @@ class ManagePlantsViewModel @Inject constructor(
     private fun getPhoto(s3Key: String) {
         val localImage = File("${application.filesDir}/$s3Key")
 
-        if(localImage.exists()) {
+        if (localImage.exists()) {
             Log.v(TAG(), "Image $s3Key exists on local device.")
             return
         }
@@ -112,12 +115,32 @@ class ManagePlantsViewModel @Inject constructor(
         )
     }
 
-    fun refresh() {
-        Log.i(TAG(), "Refreshing plants.")
-        viewModelScope.launch {
-            _isRefreshing.emit(true)
-            getPlants()
-            _isRefreshing.emit(false)
+    /**
+     * Deletes the plant details from the database and deletes its photos from S3.
+     */
+    fun deletePlant(plant: Plant) {
+        val options = StorageRemoveOptions.builder()
+            .accessLevel(StorageAccessLevel.PRIVATE)
+            .build()
+
+        plant.coverPhoto?.let { coverPhoto ->
+            Amplify.Storage.remove(
+                coverPhoto,
+                options,
+                {
+//                    plant.coverPhoto = null
+                    Log.i(TAG(), "Cover photo successfully deleted: $coverPhoto")
+                },
+                { Log.e(TAG(), "Cover photo failed to delete: ", it) }
+            )
+        }
+
+        // TODO: remove progress photos
+        realm.executeTransactionAsync {
+            it.where(Plant::class.java)
+                .equalTo("id", plant.id)
+                .findFirst()?.deleteFromRealm()
+            Log.i(TAG(), "Plant successfully deleted from database.")
         }
     }
 
