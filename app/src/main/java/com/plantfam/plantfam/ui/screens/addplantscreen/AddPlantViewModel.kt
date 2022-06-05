@@ -60,26 +60,26 @@ class AddPlantViewModel @Inject constructor(
             )?.name
         }"
 
-        val coverPhotoInputStream: InputStream? =
-            application.contentResolver.openInputStream(Uri.parse(plant.coverPhoto))
-
-        val options = StorageUploadInputStreamOptions.builder()
-            .accessLevel(StorageAccessLevel.PRIVATE)
-            .build()
-
-        Amplify.Storage.uploadInputStream(uploadKey, coverPhotoInputStream!!, options,
-            { storageUploadInputStreamResult ->
-                Log.i(TAG(), "Cover photo uploaded: ${storageUploadInputStreamResult.key}")
-
-                plant.coverPhoto = storageUploadInputStreamResult.key
-
-                realm.executeTransactionAsync {
-                    Log.i(TAG(), "Adding plant.")
-                    it.insert(plant)
-                }
-            },
-            { Log.e(TAG(), "Cover photo upload failed: ", it.cause) }
-        )
+//        val coverPhotoInputStream: InputStream? =
+//            application.contentResolver.openInputStream(Uri.parse(plant.coverPhoto))
+//
+//        val options = StorageUploadInputStreamOptions.builder()
+//            .accessLevel(StorageAccessLevel.PRIVATE)
+//            .build()
+//
+//        Amplify.Storage.uploadInputStream(uploadKey, coverPhotoInputStream!!, options,
+//            { storageUploadInputStreamResult ->
+//                Log.i(TAG(), "Cover photo uploaded: ${storageUploadInputStreamResult.key}")
+//
+//                plant.coverPhoto = storageUploadInputStreamResult.key
+//
+//                realm.executeTransactionAsync {
+//                    Log.i(TAG(), "Adding plant.")
+//                    it.insert(plant)
+//                }
+//            },
+//            { Log.e(TAG(), "Cover photo upload failed: ", it.cause) }
+//        )
     }
 
     override fun onCleared() {
