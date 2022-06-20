@@ -15,7 +15,7 @@ const val BASE_URL = "https://shrimpify.herokuapp.com"
 interface ShrimpifyService {
     @Multipart
     @POST("shrink")
-    fun compressImage(@Part("image") image: MultipartBody.Part): Call<ResponseBody>
+    fun compressImage(@Part image: MultipartBody.Part): Call<ResponseBody>
 
     companion object {
         var apiService: ShrimpifyService? = null
