@@ -40,7 +40,7 @@ class ShrimpifyRepository {
 
         val multipartBody = MultipartBody.Part.createFormData("image", imageName, requestBody)
 
-        Log.d(TAG(), "Making call to Shrimpify now.")
+        Log.d(TAG(), "Now making call to Shrimpify.")
 
         shrimpify.compressImage(multipartBody).enqueue(
             object : Callback<ResponseBody> {

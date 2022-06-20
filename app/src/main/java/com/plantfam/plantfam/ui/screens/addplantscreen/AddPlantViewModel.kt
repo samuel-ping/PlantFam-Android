@@ -47,60 +47,34 @@ class AddPlantViewModel @Inject constructor(
         })
     }
 
+    /**
+     * Send cover photo image to Shrimpify to be compressed, then adds the plant to Realm (minus the
+     * coverPhoto field).
+     */
     fun addPlant(plant: Plant) {
-        // upload coverPhoto to S3, then store url in plant
-        Log.d(TAG(), "coverphoto uri: " + plant.coverPhoto)
         val coverPhotoUri = Uri.parse(plant.coverPhoto)
 
-        Log.d(TAG(), "calling shrimpify repo compressimage() now")
-//        viewModelScope.launch {
-            ShrimpifyRepository().compressImage(
-                ::updatePlantCoverPhoto,
-                plant.id,
-                coverPhotoUri,
-                application
-            )
-//        }
+        ShrimpifyRepository().compressImage(
+            ::updatePlantCoverPhoto,
+            plant.id,
+            coverPhotoUri,
+            application
+        )
 
-        // uploadKey in the form of userId/imageUrl
-//        val uploadKey = "${user!!.id}/${
-//            DocumentFile.fromSingleUri(
-//                application,
-//                Uri.parse(plant.coverPhoto)
-//            )?.name
-//        }"
-
-//        val coverPhotoInputStream: InputStream? =
-//            application.contentResolver.openInputStream(Uri.parse(plant.coverPhoto))
-//
-//        val options = StorageUploadInputStreamOptions.builder()
-//            .accessLevel(StorageAccessLevel.PRIVATE)
-//            .build()
-//
-//        Amplify.Storage.uploadInputStream(uploadKey, coverPhotoInputStream!!, options,
-//            { storageUploadInputStreamResult ->
-//                Log.i(TAG(), "Cover photo uploaded: ${storageUploadInputStreamResult.key}")
-//
-//                plant.coverPhoto = storageUploadInputStreamResult.key
-//
-                realm.executeTransactionAsync {
-                    Log.i(TAG(), "Adding plant.")
-                    it.insert(plant)
-                }
-//            },
-//            { Log.e(TAG(), "Cover photo upload failed: ", it.cause) }
-//        )
+        realm.executeTransactionAsync {
+            Log.i(TAG(), "Adding plant.")
+            it.insert(plant)
+        }
     }
 
     /**
-     * Uplaods the image to S3, then finds the plant in the realm and updates its coverphoto field accordingly.
+     * Uploads the image to S3, then finds the plant in the realm and updates its coverphoto field accordingly.
      */
     private fun updatePlantCoverPhoto(
         plantId: ObjectId,
         imageName: String,
         imageInputStream: InputStream?
     ) {
-        // uploadKey in the form of userId/imageUrl
         val uploadKey = "${user!!.id}/${imageName}"
 
         val options = StorageUploadInputStreamOptions.builder()
