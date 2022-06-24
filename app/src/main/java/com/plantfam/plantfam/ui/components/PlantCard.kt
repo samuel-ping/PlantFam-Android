@@ -1,19 +1,24 @@
 package com.plantfam.plantfam.ui.components
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import coil.compose.ImagePainter
 import coil.compose.rememberImagePainter
+import com.plantfam.plantfam.R
 import com.plantfam.plantfam.network.model.Plant
 import java.io.File
 
@@ -37,12 +42,28 @@ fun PlantCard(plant: Plant, onClick: () -> Unit, onEdit: () -> Unit, onDelete: (
     ) {
         Column(modifier = Modifier.padding(24.dp)) {
             with(plant) {
-                Image(
-                    painter = rememberImagePainter(File("${applicationContext.filesDir}/${plant.coverPhoto}")),
-                    contentDescription = "Photo of ${plant.nickname} the ${plant.scientificName}.",
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier.size(128.dp)
-                )
+                if (coverPhoto.isNullOrBlank()) {
+                    val painter = rememberImagePainter(R.drawable.plant_image_placeholder)
+                    val painterState = painter.state
+
+                    AnimatedVisibility(visible = (painterState is ImagePainter.State.Loading)) {
+                        CircularProgressIndicator()
+                    }
+                    Image(
+                        painter = painter,
+                        contentDescription = "Placeholder image for your plant.",
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier
+                            .size(128.dp)
+                    )
+                } else {
+                    Image(
+                        painter = rememberImagePainter(File("${applicationContext.filesDir}/${plant.coverPhoto}")),
+                        contentDescription = "Photo of ${plant.nickname} the ${plant.scientificName}.",
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier.size(128.dp)
+                    )
+                }
                 nickname?.let {
                     Text(
                         text = it,

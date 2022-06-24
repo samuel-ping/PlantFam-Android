@@ -82,7 +82,7 @@ class ManagePlantsViewModel @Inject constructor(
                 plants = updatedResult.freeze()
 
                 for (plant in plants) {
-                    plant.coverPhoto?.let { getPhoto(it) }
+                    getPhoto(plant.coverPhoto)
                 }
             }
 
@@ -92,7 +92,9 @@ class ManagePlantsViewModel @Inject constructor(
     /**
      * If the photo does not exist on the local device, then download it.
      */
-    private fun getPhoto(s3Key: String) {
+    private fun getPhoto(s3Key: String?) {
+        if(s3Key == null) return
+
         val localImage = File("${application.filesDir}/$s3Key")
 
         if (localImage.exists()) {

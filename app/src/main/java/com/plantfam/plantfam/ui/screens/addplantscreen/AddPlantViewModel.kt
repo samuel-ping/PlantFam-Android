@@ -63,29 +63,31 @@ class AddPlantViewModel @Inject constructor(
      * coverPhoto field).
      */
     fun addPlant(plant: Plant) {
-        val coverPhotoUri = Uri.parse(plant.coverPhoto)
-        val coverPhotoPath: String? = coverPhotoUri.path
-        val coverPhotoFileName = DocumentFile.fromSingleUri(
-            application,
-            Uri.parse(plant.coverPhoto)
-        )?.name
-        val coverPhotoFile = FileUtil.from(application, coverPhotoUri)
+        if(!plant.coverPhoto.isNullOrBlank()) {
+            val coverPhotoUri = Uri.parse(plant.coverPhoto)
+            val coverPhotoPath: String? = coverPhotoUri.path
+            val coverPhotoFileName = DocumentFile.fromSingleUri(
+                application,
+                Uri.parse(plant.coverPhoto)
+            )?.name
+            val coverPhotoFile = FileUtil.from(application, coverPhotoUri)
+
+            if (coverPhotoPath != null && coverPhotoFileName != null) {
+                viewModelScope.launch {
+                    val compressedCoverPhotoFile = compressImage(coverPhotoFile)
+
+                    updatePlantCoverPhoto(
+                        plant.id,
+                        coverPhotoFileName,
+                        compressedCoverPhotoFile.inputStream()
+                    )
+                }
+            }
+        }
 
         realm.executeTransactionAsync {
             Log.i(TAG(), "Adding plant.")
             it.insert(plant)
-        }
-
-        if (coverPhotoPath != null && coverPhotoFileName != null) {
-            viewModelScope.launch {
-                val compressedCoverPhotoFile = compressImage(coverPhotoFile)
-
-                updatePlantCoverPhoto(
-                    plant.id,
-                    coverPhotoFileName,
-                    compressedCoverPhotoFile.inputStream()
-                )
-            }
         }
     }
 
