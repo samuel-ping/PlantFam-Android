@@ -111,8 +111,8 @@ dependencies {
     // Coil
     implementation("io.coil-kt:coil-compose:1.4.0")
 
-    // Retrofit
-    implementation "com.squareup.retrofit2:retrofit:2.9.0"
+    // Compressor (for compressing images)
+    implementation 'id.zelory:compressor:3.0.1'
 
     // Datepicker Dialogs
     implementation "io.github.vanpra.compose-material-dialogs:datetime:0.6.2"
