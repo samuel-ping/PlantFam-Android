@@ -1,5 +1,6 @@
-package com.plantfam.plantfam.util;
+package com.plantfam.plantfam.ui.screens.addplantscreen;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
@@ -22,10 +23,6 @@ import java.io.OutputStream;
 class FileUtil {
     private static final int EOF = -1;
     private static final int DEFAULT_BUFFER_SIZE = 1024 * 4;
-
-    private FileUtil() {
-
-    }
 
     public static File from(Context context, Uri uri) throws IOException {
         InputStream inputStream = context.getContentResolver().openInputStream(uri);
@@ -63,6 +60,7 @@ class FileUtil {
         return new String[]{name, extension};
     }
 
+    @SuppressLint("Range") // we'll ignore this for now- samuel-ping
     private static String getFileName(Context context, Uri uri) {
         String result = null;
         if (uri.getScheme().equals("content")) {

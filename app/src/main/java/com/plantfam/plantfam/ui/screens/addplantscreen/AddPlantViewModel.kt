@@ -2,8 +2,11 @@ package com.plantfam.plantfam.ui.screens.addplantscreen
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.Bitmap
 import android.net.Uri
 import android.util.Log
+import androidx.annotation.MainThread
+import androidx.documentfile.provider.DocumentFile
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.amplifyframework.core.Amplify
@@ -12,15 +15,23 @@ import com.amplifyframework.storage.options.StorageUploadInputStreamOptions
 import com.plantfam.plantfam.TAG
 import com.plantfam.plantfam.plantFamApp
 import com.plantfam.plantfam.network.model.Plant
-import com.plantfam.plantfam.network.repository.ShrimpifyRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.android.scopes.ViewModelScoped
+import id.zelory.compressor.Compressor
+import id.zelory.compressor.constraint.format
+import id.zelory.compressor.constraint.quality
 import io.realm.Realm
 import io.realm.mongodb.User
 import io.realm.mongodb.sync.SyncConfiguration
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.bson.types.ObjectId
+import java.io.File
 import java.io.InputStream
+import java.nio.file.Files
+import java.nio.file.Paths
 import javax.inject.Inject
 
 @HiltViewModel
@@ -53,18 +64,43 @@ class AddPlantViewModel @Inject constructor(
      */
     fun addPlant(plant: Plant) {
         val coverPhotoUri = Uri.parse(plant.coverPhoto)
-
-        ShrimpifyRepository().compressImage(
-            ::updatePlantCoverPhoto,
-            plant.id,
-            coverPhotoUri,
-            application
-        )
+        val coverPhotoPath: String? = coverPhotoUri.path
+        val coverPhotoFileName = DocumentFile.fromSingleUri(
+            application,
+            Uri.parse(plant.coverPhoto)
+        )?.name
+        val coverPhotoFile = FileUtil.from(application, coverPhotoUri)
 
         realm.executeTransactionAsync {
             Log.i(TAG(), "Adding plant.")
             it.insert(plant)
         }
+
+        if (coverPhotoPath != null && coverPhotoFileName != null) {
+            viewModelScope.launch {
+                val compressedCoverPhotoFile = compressImage(coverPhotoFile)
+
+                updatePlantCoverPhoto(
+                    plant.id,
+                    coverPhotoFileName,
+                    compressedCoverPhotoFile.inputStream()
+                )
+            }
+        }
+    }
+
+    private suspend fun compressImage(imageFile: File): File {
+        val compressedImage = Compressor.compress(
+            application,
+            imageFile,
+            Dispatchers.Main // TODO: #7 this upload doesn't work if not run on the main thread
+        ) {
+            quality(80)
+            format(Bitmap.CompressFormat.WEBP)
+        }
+
+        Log.i(TAG(), "compressed image")
+        return compressedImage
     }
 
     /**
@@ -76,6 +112,7 @@ class AddPlantViewModel @Inject constructor(
         imageInputStream: InputStream?
     ) {
         val uploadKey = "${user!!.id}/${imageName}"
+        Log.d(TAG(), "upload key: $uploadKey")
 
         val options = StorageUploadInputStreamOptions.builder()
             .accessLevel(StorageAccessLevel.PRIVATE)
