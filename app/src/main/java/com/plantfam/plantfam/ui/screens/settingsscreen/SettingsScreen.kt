@@ -10,11 +10,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
+import androidx.navigation.NavController
 import com.plantfam.plantfam.ui.components.BottomAppBarContent
 
 @Composable
-fun SettingsScreen(navController: NavHostController, viewModel: SettingsViewModel) {
+fun SettingsScreen(navController: NavController, viewModel: SettingsViewModel) {
     Scaffold(
         topBar = {
             TopAppBar(
@@ -23,7 +23,6 @@ fun SettingsScreen(navController: NavHostController, viewModel: SettingsViewMode
                 },
             )
         },
-        bottomBar = { BottomAppBarContent(navController) },
     ) {
         LazyColumn {
             // Add a single item

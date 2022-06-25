@@ -3,18 +3,19 @@ package com.plantfam.plantfam
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.animation.EnterTransition
-import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.material.*
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.ScaffoldState
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import androidx.navigation.NavHostController
-import com.google.accompanist.navigation.animation.AnimatedNavHost
-import com.google.accompanist.navigation.animation.composable
-import com.google.accompanist.navigation.animation.rememberAnimatedNavController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.plantfam.plantfam.ui.screens.addplantscreen.AddPlantScreen
 import com.plantfam.plantfam.ui.screens.addplantscreen.AddPlantViewModel
 import com.plantfam.plantfam.ui.screens.emailconfirmationscreen.EmailConfirmationScreen
@@ -32,9 +33,7 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-    @ExperimentalAnimationApi
-    @ExperimentalMaterialApi
-    @ExperimentalFoundationApi
+    @OptIn(ExperimentalAnimationApi::class, ExperimentalFoundationApi::class,)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -45,30 +44,21 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    @ExperimentalAnimationApi
-    @ExperimentalFoundationApi
-    @ExperimentalMaterialApi
+    @OptIn(ExperimentalAnimationApi::class, ExperimentalFoundationApi::class,)
     @Composable
     fun PlantFamApp() {
-        val navController = rememberAnimatedNavController()
+        val navController = rememberNavController()
         val scaffoldState = rememberScaffoldState()
 
         PlantNavHost(navController, scaffoldState)
     }
 
-    @ExperimentalAnimationApi
-    @ExperimentalFoundationApi
-    @ExperimentalMaterialApi
+    @OptIn(ExperimentalAnimationApi::class, ExperimentalFoundationApi::class,)
     @Composable
     fun PlantNavHost(navController: NavHostController, scaffoldState: ScaffoldState) {
-        AnimatedNavHost(
+        NavHost(
             navController = navController,
             startDestination = "login",
-            // Disable animations between screen transitions.
-            enterTransition = { EnterTransition.None },
-            exitTransition = { ExitTransition.None },
-            popEnterTransition = { EnterTransition.None },
-            popExitTransition = { ExitTransition.None },
         ) {
             composable("login") { LoginDestination(navController, scaffoldState) }
             composable("emailconfirmation/{email}") { backStackEntry ->
@@ -87,20 +77,20 @@ class MainActivity : ComponentActivity() {
     }
 
     @Composable
-    fun LoginDestination(navController: NavHostController, scaffoldState: ScaffoldState) {
+    fun LoginDestination(navController: NavController, scaffoldState: ScaffoldState) {
         val loginViewModel: LoginViewModel = hiltViewModel()
-        var scope = rememberCoroutineScope()
+        val scope = rememberCoroutineScope()
         LoginScreen(navController, scaffoldState, scope, loginViewModel)
     }
 
     @Composable
     fun EmailConfirmationDestination(
         email: String,
-        navController: NavHostController,
+        navController: NavController,
         scaffoldState: ScaffoldState
     ) {
         val emailConfirmationViewModel: EmailConfirmationViewModel = hiltViewModel()
-        var scope = rememberCoroutineScope()
+        val scope = rememberCoroutineScope()
         EmailConfirmationScreen(
             email,
             navController,
@@ -110,28 +100,27 @@ class MainActivity : ComponentActivity() {
         )
     }
 
-    @ExperimentalFoundationApi
-    @ExperimentalMaterialApi
+    @OptIn(ExperimentalFoundationApi::class)
     @Composable
-    fun ManagePlantsDestination(navController: NavHostController) {
+    fun ManagePlantsDestination(navController: NavController) {
         val managePlantsViewModel: ManagePlantsViewModel = hiltViewModel()
         ManagePlantsScreen(navController, managePlantsViewModel)
     }
 
     @Composable
-    fun AddPlantDestination(navController: NavHostController) {
+    fun AddPlantDestination(navController: NavController) {
         val addPlantViewModel: AddPlantViewModel = hiltViewModel()
         AddPlantScreen(navController, addPlantViewModel)
     }
 
     @Composable
-    fun PlantDetailsDestination(plantId: String, navController: NavHostController) {
+    fun PlantDetailsDestination(plantId: String, navController: NavController) {
         val plantDetailsViewModel: PlantDetailsViewModel = hiltViewModel()
         PlantDetailsScreen(plantId, navController, plantDetailsViewModel)
     }
 
     @Composable
-    fun SettingsDestination(navController: NavHostController) {
+    fun SettingsDestination(navController: NavController) {
         val settingsViewModel: SettingsViewModel = hiltViewModel()
         SettingsScreen(navController, settingsViewModel)
     }

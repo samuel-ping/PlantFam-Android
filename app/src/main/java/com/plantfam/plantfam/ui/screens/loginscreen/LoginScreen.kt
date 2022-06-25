@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.plantfam.plantfam.ui.components.CreateAccountForm
 import com.plantfam.plantfam.ui.components.LoginForm
@@ -14,7 +15,7 @@ import kotlinx.coroutines.CoroutineScope
 @SuppressLint("CoroutineCreationDuringComposition")
 @Composable
 fun LoginScreen(
-    navController: NavHostController,
+    navController: NavController,
     scaffoldState: ScaffoldState,
     scope: CoroutineScope,
     viewModel: LoginViewModel

@@ -6,81 +6,98 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyVerticalGrid
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
+import androidx.navigation.NavController
 import com.amplifyframework.core.Amplify
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.plantfam.plantfam.ui.components.AddPlantButton
-import com.plantfam.plantfam.ui.components.BottomAppBarContent
 import com.plantfam.plantfam.ui.components.ConfirmationDialog
 import com.plantfam.plantfam.ui.components.PlantCard
 
-@ExperimentalMaterialApi
-@ExperimentalFoundationApi
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun ManagePlantsScreen(navController: NavHostController, viewModel: ManagePlantsViewModel) {
+fun ManagePlantsScreen(navController: NavController, viewModel: ManagePlantsViewModel) {
     val isRefreshing by viewModel.isRefreshing.collectAsState()
     val applicationContext = LocalContext.current.applicationContext
     val plants = viewModel.plants
 
     var showDeletePlantConfirmationDialog by remember { mutableStateOf(false) }
 
-    // Redirect to login page is user is not logged in.
-    Amplify.Auth.fetchAuthSession(
-        { if(!it.isSignedIn) navController.navigate("login") },
-        { Log.e("ManagePlantsScreen", "Failed to fetch auth session.")}
-    )
-
     Scaffold(
         topBar = {
-            TopAppBar(title = { Text("My Plants") })
+            TopAppBar(
+                title = { Text("My Plants") },
+                actions = {
+                    IconButton(onClick = {
+                        navController.navigate("settings") {
+                            navController.graph.startDestinationRoute?.let { route ->
+                                popUpTo(route) {
+                                    saveState = true
+                                }
+                            }
+                            launchSingleTop = true
+                            restoreState = true
+                        }
+                    }) {
+                        Icon(
+                            imageVector = Icons.Default.Settings,
+                            contentDescription = "Go to settings"
+                        )
+                    }
+                }
+            )
         },
-        bottomBar = { BottomAppBarContent(navController) },
         floatingActionButton = {
             AddPlantButton(navController)
         },
     ) {
-        SwipeRefresh(
-            state = rememberSwipeRefreshState(isRefreshing),
-            onRefresh = {
-                viewModel.refresh()
-            }
+        Column(
+            modifier = Modifier.padding(8.dp, 0.dp, 8.dp, 0.dp)
         ) {
-            LazyVerticalGrid(
-                cells = GridCells.Fixed(count = 2),
-                contentPadding = PaddingValues(8.dp)
+            SwipeRefresh(
+                state = rememberSwipeRefreshState(isRefreshing),
+                onRefresh = {
+                    viewModel.refresh()
+                }
             ) {
-                items(plants.size) { plant ->
-                    PlantCard(
-                        plants[plant],
-                        onClick = {
-                            navController.navigate("details/${plants[plant].id}")
-                        },
-                        onEdit = {},
-                        onDelete = { showDeletePlantConfirmationDialog = true }
-                    ) // TODO: plants[plant] seems unnecessary?
+                LazyVerticalGrid(
+                    cells = GridCells.Adaptive(minSize = 180.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    items(plants.size) { plant ->
+                        PlantCard(
+                            plants[plant],
+                            onClick = {
+                                navController.navigate("details/${plants[plant].id}")
+                            },
+                            onEdit = {},
+                            onDelete = { showDeletePlantConfirmationDialog = true }
+                        ) // TODO: plants[plant] seems unnecessary?
 
-                    ConfirmationDialog(
-                        show = showDeletePlantConfirmationDialog,
-                        title = "Permanently Delete ${plants[plant].nickname}?",
-                        description = "Are you sure you want to delete ${plants[plant].nickname}? If this plant has passed away, you can move it to the graveyard instead of deleting it.",
-                        onDismiss = { showDeletePlantConfirmationDialog = false },
-                        onConfirm = {
-                            viewModel.deletePlant(plants[plant])
-                            showDeletePlantConfirmationDialog = false
-                        }
-                    )
+                        ConfirmationDialog(
+                            show = showDeletePlantConfirmationDialog,
+                            title = "Permanently Delete ${plants[plant].nickname}?",
+                            description = "Are you sure you want to delete ${plants[plant].nickname}? If this plant has passed away, you can move it to the graveyard instead of deleting it.",
+                            onDismiss = { showDeletePlantConfirmationDialog = false },
+                            onConfirm = {
+                                viewModel.deletePlant(plants[plant])
+                                showDeletePlantConfirmationDialog = false
+                            }
+                        )
+                    }
                 }
             }
         }
     }
 }
-
-
 
 @ExperimentalMaterialApi
 @ExperimentalFoundationApi

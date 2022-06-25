@@ -13,7 +13,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
+import androidx.navigation.NavController
 import coil.compose.ImagePainter
 import coil.compose.rememberImagePainter
 import coil.transform.CircleCropTransformation
@@ -23,7 +23,7 @@ import java.io.File
 @Composable
 fun PlantDetailsScreen(
     plantId: String,
-    navController: NavHostController,
+    navController: NavController,
     viewModel: PlantDetailsViewModel
 ) {
     val applicationContext = LocalContext.current.applicationContext
