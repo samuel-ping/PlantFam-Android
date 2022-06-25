@@ -1,9 +1,10 @@
 package com.plantfam.plantfam.ui.screens.manageplantsscreen
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.GridCells
-import androidx.compose.foundation.lazy.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Settings
@@ -20,6 +21,7 @@ import com.plantfam.plantfam.ui.components.AddPlantButton
 import com.plantfam.plantfam.ui.components.ConfirmationDialog
 import com.plantfam.plantfam.ui.components.PlantCard
 
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ManagePlantsScreen(navController: NavHostController, viewModel: ManagePlantsViewModel) {
@@ -67,7 +69,7 @@ fun ManagePlantsScreen(navController: NavHostController, viewModel: ManagePlants
                 }
             ) {
                 LazyVerticalGrid(
-                    cells = GridCells.Adaptive(minSize = 180.dp),
+                    columns = GridCells.Adaptive(minSize = 180.dp),
                     contentPadding = PaddingValues(4.dp),
                     verticalArrangement = Arrangement.spacedBy(8.dp),
                     horizontalArrangement = Arrangement.spacedBy(8.dp),

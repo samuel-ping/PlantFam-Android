@@ -3,6 +3,8 @@ package com.plantfam.plantfam
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material.ExperimentalMaterialApi
@@ -14,8 +16,12 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
+//import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.google.accompanist.navigation.animation.AnimatedNavHost
+import com.google.accompanist.navigation.animation.composable
+import com.google.accompanist.navigation.animation.navigation
+import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.plantfam.plantfam.ui.components.ui.theme.PlantFamTheme
 import com.plantfam.plantfam.ui.screens.addplantscreen.AddPlantScreen
 import com.plantfam.plantfam.ui.screens.addplantscreen.AddPlantViewModel
@@ -45,21 +51,26 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    @OptIn(ExperimentalFoundationApi::class)
+    @OptIn(ExperimentalFoundationApi::class, ExperimentalAnimationApi::class)
     @Composable
     fun PlantFamApp() {
-        val navController = rememberNavController()
+        val navController = rememberAnimatedNavController()
         val scaffoldState = rememberScaffoldState()
 
         PlantNavHost(navController, scaffoldState)
     }
 
-    @OptIn(ExperimentalFoundationApi::class)
+    @OptIn(ExperimentalFoundationApi::class, ExperimentalAnimationApi::class)
     @Composable
     fun PlantNavHost(navController: NavHostController, scaffoldState: ScaffoldState) {
-        NavHost(
+        AnimatedNavHost(
             navController = navController,
             startDestination = "login",
+            // Disable animations between screen transitions.
+            enterTransition = { EnterTransition.None },
+            exitTransition = { ExitTransition.None },
+            popEnterTransition = { EnterTransition.None },
+            popExitTransition = { ExitTransition.None }
         ) {
             composable("login") { LoginDestination(navController, scaffoldState) }
             composable("emailconfirmation/{email}") { backStackEntry ->
