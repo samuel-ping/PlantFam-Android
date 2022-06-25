@@ -15,12 +15,15 @@ import kotlinx.coroutines.CoroutineScope
 @SuppressLint("CoroutineCreationDuringComposition")
 @Composable
 fun LoginScreen(
-    navController: NavController,
+    navController: NavHostController,
     scaffoldState: ScaffoldState,
     scope: CoroutineScope,
     viewModel: LoginViewModel
 ) {
-    viewModel.redirectIfLoggedIn { navController.navigate("manageplants") }
+    viewModel.redirectIfLoggedIn {
+        navController.popBackStack()
+        navController.navigate("manageplants")
+    }
 
     var tabIndex by remember { mutableStateOf(0) }
     val tabTitles = listOf("New User", "Existing User")

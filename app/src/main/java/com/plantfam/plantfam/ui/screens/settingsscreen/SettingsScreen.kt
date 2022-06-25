@@ -5,27 +5,37 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Logout
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import com.plantfam.plantfam.ui.components.BottomAppBarContent
 
 @Composable
-fun SettingsScreen(navController: NavController, viewModel: SettingsViewModel) {
+fun SettingsScreen(navController: NavHostController, viewModel: SettingsViewModel) {
     Scaffold(
         topBar = {
             TopAppBar(
                 title = {
                     Text("Settings")
                 },
+                navigationIcon = {
+                    IconButton(onClick = { navController.navigateUp() }) {
+                        Icon(
+                            imageVector = Icons.Filled.ArrowBack,
+                            contentDescription = "Close settings screen"
+                        )
+                    }
+                }
             )
         },
     ) {
         LazyColumn {
-            // Add a single item
             item {
                 Button(
                     onClick = {

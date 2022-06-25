@@ -35,7 +35,7 @@ import java.time.ZoneId
 import java.util.*
 
 @Composable
-fun AddPlantScreen(navController: NavController, viewModel: AddPlantViewModel) {
+fun AddPlantScreen(navController: NavHostController, viewModel: AddPlantViewModel) {
     val context = LocalContext.current
 
     var coverPhoto by remember { mutableStateOf("") }

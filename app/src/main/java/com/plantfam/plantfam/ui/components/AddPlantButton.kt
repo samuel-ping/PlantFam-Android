@@ -7,10 +7,10 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
-import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 
 @Composable
-fun AddPlantButton(navHostController: NavController) {
+fun AddPlantButton(navHostController: NavHostController) {
     FloatingActionButton(
         shape = CircleShape,
         onClick = { navHostController.navigate("addplant") },

@@ -18,7 +18,7 @@ import kotlinx.coroutines.CoroutineScope
 @Composable
 fun EmailConfirmationScreen(
     email: String,
-    navController: NavController,
+    navController: NavHostController,
     scaffoldState: ScaffoldState,
     scope: CoroutineScope,
     viewModel: EmailConfirmationViewModel

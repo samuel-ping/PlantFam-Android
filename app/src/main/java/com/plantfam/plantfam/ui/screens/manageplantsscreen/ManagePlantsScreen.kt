@@ -1,6 +1,5 @@
 package com.plantfam.plantfam.ui.screens.manageplantsscreen
 
-import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.GridCells
@@ -14,7 +13,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.amplifyframework.core.Amplify
+import androidx.navigation.NavHostController
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.plantfam.plantfam.ui.components.AddPlantButton
@@ -23,7 +22,7 @@ import com.plantfam.plantfam.ui.components.PlantCard
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun ManagePlantsScreen(navController: NavController, viewModel: ManagePlantsViewModel) {
+fun ManagePlantsScreen(navController: NavHostController, viewModel: ManagePlantsViewModel) {
     val isRefreshing by viewModel.isRefreshing.collectAsState()
     val applicationContext = LocalContext.current.applicationContext
     val plants = viewModel.plants
@@ -69,8 +68,10 @@ fun ManagePlantsScreen(navController: NavController, viewModel: ManagePlantsView
             ) {
                 LazyVerticalGrid(
                     cells = GridCells.Adaptive(minSize = 180.dp),
+                    contentPadding = PaddingValues(4.dp),
                     verticalArrangement = Arrangement.spacedBy(8.dp),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    modifier = Modifier.padding(0.dp,8.dp)
                 ) {
                     items(plants.size) { plant ->
                         PlantCard(
@@ -99,8 +100,6 @@ fun ManagePlantsScreen(navController: NavController, viewModel: ManagePlantsView
     }
 }
 
-@ExperimentalMaterialApi
-@ExperimentalFoundationApi
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {

@@ -16,6 +16,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.plantfam.plantfam.ui.components.ui.theme.PlantFamTheme
 import com.plantfam.plantfam.ui.screens.addplantscreen.AddPlantScreen
 import com.plantfam.plantfam.ui.screens.addplantscreen.AddPlantViewModel
 import com.plantfam.plantfam.ui.screens.emailconfirmationscreen.EmailConfirmationScreen
@@ -33,18 +34,18 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-    @OptIn(ExperimentalAnimationApi::class, ExperimentalFoundationApi::class,)
+    @OptIn(ExperimentalFoundationApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContent {
-            PlantFamAndroidTheme {
+            PlantFamTheme {
                 PlantFamApp()
             }
         }
     }
 
-    @OptIn(ExperimentalAnimationApi::class, ExperimentalFoundationApi::class,)
+    @OptIn(ExperimentalFoundationApi::class)
     @Composable
     fun PlantFamApp() {
         val navController = rememberNavController()
@@ -53,7 +54,7 @@ class MainActivity : ComponentActivity() {
         PlantNavHost(navController, scaffoldState)
     }
 
-    @OptIn(ExperimentalAnimationApi::class, ExperimentalFoundationApi::class,)
+    @OptIn(ExperimentalFoundationApi::class)
     @Composable
     fun PlantNavHost(navController: NavHostController, scaffoldState: ScaffoldState) {
         NavHost(
@@ -77,7 +78,7 @@ class MainActivity : ComponentActivity() {
     }
 
     @Composable
-    fun LoginDestination(navController: NavController, scaffoldState: ScaffoldState) {
+    fun LoginDestination(navController: NavHostController, scaffoldState: ScaffoldState) {
         val loginViewModel: LoginViewModel = hiltViewModel()
         val scope = rememberCoroutineScope()
         LoginScreen(navController, scaffoldState, scope, loginViewModel)
@@ -86,7 +87,7 @@ class MainActivity : ComponentActivity() {
     @Composable
     fun EmailConfirmationDestination(
         email: String,
-        navController: NavController,
+        navController: NavHostController,
         scaffoldState: ScaffoldState
     ) {
         val emailConfirmationViewModel: EmailConfirmationViewModel = hiltViewModel()
@@ -102,25 +103,25 @@ class MainActivity : ComponentActivity() {
 
     @OptIn(ExperimentalFoundationApi::class)
     @Composable
-    fun ManagePlantsDestination(navController: NavController) {
+    fun ManagePlantsDestination(navController: NavHostController) {
         val managePlantsViewModel: ManagePlantsViewModel = hiltViewModel()
         ManagePlantsScreen(navController, managePlantsViewModel)
     }
 
     @Composable
-    fun AddPlantDestination(navController: NavController) {
+    fun AddPlantDestination(navController: NavHostController) {
         val addPlantViewModel: AddPlantViewModel = hiltViewModel()
         AddPlantScreen(navController, addPlantViewModel)
     }
 
     @Composable
-    fun PlantDetailsDestination(plantId: String, navController: NavController) {
+    fun PlantDetailsDestination(plantId: String, navController: NavHostController) {
         val plantDetailsViewModel: PlantDetailsViewModel = hiltViewModel()
         PlantDetailsScreen(plantId, navController, plantDetailsViewModel)
     }
 
     @Composable
-    fun SettingsDestination(navController: NavController) {
+    fun SettingsDestination(navController: NavHostController) {
         val settingsViewModel: SettingsViewModel = hiltViewModel()
         SettingsScreen(navController, settingsViewModel)
     }
