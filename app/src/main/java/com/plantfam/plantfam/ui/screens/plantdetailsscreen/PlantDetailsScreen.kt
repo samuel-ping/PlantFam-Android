@@ -1,5 +1,6 @@
 package com.plantfam.plantfam.ui.screens.plantdetailsscreen
 
+import android.annotation.SuppressLint
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
@@ -21,6 +22,7 @@ import coil.transform.CircleCropTransformation
 import com.plantfam.plantfam.R
 import java.io.File
 
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun PlantDetailsScreen(
     plantId: String,
@@ -84,11 +86,12 @@ fun PlantDetailsScreen(
                     }
                 }
 
-                nickname?.let { it1 -> Text(it1) }
-                commonName?.let { it -> Text(it) }
-                scientificName?.let { it -> Text(it) }
+                Text(nickname ?: "")
+                Text(commonName ?: "")
+                Text(scientificName ?: "")
                 Text(adoptionDate.toString())
-                adoptedFrom?.let { it -> Text(it) }
+                Text(adoptedFrom ?: "")
+                Text(parent?.nickname ?: "")
             }
         }
     }

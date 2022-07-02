@@ -6,6 +6,10 @@ import android.graphics.Bitmap
 import android.net.Uri
 import android.util.Log
 import androidx.annotation.MainThread
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.neverEqualPolicy
+import androidx.compose.runtime.setValue
 import androidx.documentfile.provider.DocumentFile
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -21,7 +25,11 @@ import dagger.hilt.android.scopes.ViewModelScoped
 import id.zelory.compressor.Compressor
 import id.zelory.compressor.constraint.format
 import id.zelory.compressor.constraint.quality
+import io.realm.OrderedCollectionChangeSet
+import io.realm.OrderedRealmCollectionChangeListener
 import io.realm.Realm
+import io.realm.RealmResults
+import io.realm.kotlin.where
 import io.realm.mongodb.User
 import io.realm.mongodb.sync.SyncConfiguration
 import kotlinx.coroutines.Dispatchers
@@ -41,6 +49,11 @@ class AddPlantViewModel @Inject constructor(
     private lateinit var realm: Realm
     var user: User? = null
 
+    var plants: List<Plant> by mutableStateOf(listOf(), neverEqualPolicy())
+        private set
+
+    private lateinit var plantsList: RealmResults<Plant>
+
     init {
         user = plantFamApp.currentUser()
         instantiateSyncedRealm()
@@ -54,13 +67,25 @@ class AddPlantViewModel @Inject constructor(
             override fun onSuccess(realm: Realm) {
                 // since this realm should live exactly as long as this Composable/ViewModel, assign the realm to a member variable
                 this@AddPlantViewModel.realm = realm
+                getPlants()
             }
         })
     }
 
+    private fun getPlants() {
+        plantsList = realm.where<Plant>().findAllAsync()
+
+        val plantsChangeListener =
+            OrderedRealmCollectionChangeListener { updatedResult: RealmResults<Plant>, _: OrderedCollectionChangeSet ->
+                Log.i(TAG(), "Fetched new plants data.")
+                plants = updatedResult.freeze()
+            }
+
+        plantsList.addChangeListener(plantsChangeListener)
+    }
+
     /**
-     * Send cover photo image to Shrimpify to be compressed, then adds the plant to Realm (minus the
-     * coverPhoto field).
+     * Compresses cover photo image, then adds the plant to Realm (minus the coverPhoto field).
      */
     fun addPlant(plant: Plant) {
         if(!plant.coverPhoto.isNullOrBlank()) {
@@ -86,6 +111,13 @@ class AddPlantViewModel @Inject constructor(
         }
 
         realm.executeTransactionAsync {
+            if(plant.parent != null) {
+                val plantRealmObject = it.where(Plant::class.java)
+                    .equalTo("id", plant.parent!!.id)
+                    .findFirst()
+                plant.parent = plantRealmObject
+            }
+
             Log.i(TAG(), "Adding plant.")
             it.insert(plant)
         }

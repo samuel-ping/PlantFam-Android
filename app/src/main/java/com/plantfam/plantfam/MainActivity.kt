@@ -7,20 +7,14 @@ import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ScaffoldState
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
-//import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
-import com.google.accompanist.navigation.animation.navigation
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.plantfam.plantfam.ui.components.ui.theme.PlantFamTheme
 import com.plantfam.plantfam.ui.screens.addplantscreen.AddPlantScreen
@@ -35,7 +29,6 @@ import com.plantfam.plantfam.ui.screens.plantdetailsscreen.PlantDetailsScreen
 import com.plantfam.plantfam.ui.screens.plantdetailsscreen.PlantDetailsViewModel
 import com.plantfam.plantfam.ui.screens.settingsscreen.SettingsScreen
 import com.plantfam.plantfam.ui.screens.settingsscreen.SettingsViewModel
-import com.plantfam.plantfam.ui.theme.PlantFamAndroidTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
