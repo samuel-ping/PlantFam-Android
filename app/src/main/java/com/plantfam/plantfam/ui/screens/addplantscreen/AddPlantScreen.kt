@@ -4,12 +4,9 @@ import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
@@ -22,22 +19,20 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavHostController
 import coil.compose.rememberImagePainter
 import coil.transform.CircleCropTransformation
 import com.plantfam.plantfam.R
 import com.plantfam.plantfam.network.model.Plant
+import com.plantfam.plantfam.ui.components.PlantPickerDialog
 import com.plantfam.plantfam.ui.components.SavePlantButton
-import com.vanpra.composematerialdialogs.MaterialDialog
-import com.vanpra.composematerialdialogs.datetime.date.datepicker
-import com.vanpra.composematerialdialogs.rememberMaterialDialogState
 import java.time.LocalDate
 import java.time.ZoneId
 import java.util.*
 
 @Composable
 fun AddPlantScreen(navController: NavHostController, viewModel: AddPlantViewModel) {
+    val context = LocalContext.current
     val plants = viewModel.plants
 
     var coverPhoto by remember { mutableStateOf("") }
@@ -51,9 +46,6 @@ fun AddPlantScreen(navController: NavHostController, viewModel: AddPlantViewMode
     var deceasedDate by remember { mutableStateOf(LocalDate.now()) }
 
     var parentPickerDialogState by remember { mutableStateOf(false) }
-
-    val adoptionDatePickerDialogState = rememberMaterialDialogState()
-    val deceasedDatePickerDialogState = rememberMaterialDialogState()
 
     val launcher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) {
         if (it != null) coverPhoto = it.toString()
@@ -88,9 +80,9 @@ fun AddPlantScreen(navController: NavHostController, viewModel: AddPlantViewMode
                         ),
                         adoptedFrom = adoptedFrom.ifBlank { null },
                         isDeceased = isDeceased == "Yes",
-                        deceasedDate = if (isDeceased == "Yes") Date.from(
+                        deceasedDate = Date.from(
                             deceasedDate.atStartOfDay(defaultZoneId).toInstant()
-                        ) else null,
+                        ),
                         parent = parent,
                         coverPhoto = coverPhoto.ifBlank { null }
                     )
@@ -198,21 +190,15 @@ fun AddPlantScreen(navController: NavHostController, viewModel: AddPlantViewMode
                 )
                 Button(
                     onClick = {
-                        adoptionDatePickerDialogState.show()
+                        viewModel.showDatePickerDialog(
+                            context,
+                            onSelection = { date ->
+                                adoptionDate = date
+                            }
+                        )
                     },
                 ) {
                     Text(text = adoptionDate.toString())
-                }
-            }
-            MaterialDialog(
-                dialogState = adoptionDatePickerDialogState,
-                buttons = {
-                    positiveButton("Ok")
-                    negativeButton("Cancel")
-                }
-            ) {
-                datepicker { date ->
-                    adoptionDate = date
                 }
             }
 
@@ -236,8 +222,8 @@ fun AddPlantScreen(navController: NavHostController, viewModel: AddPlantViewMode
                     modifier = Modifier.clickable { parent = null }
                 )
             }
-            if(parentPickerDialogState) {
-                ParentPickerDialog(
+            if (parentPickerDialogState) {
+                PlantPickerDialog(
                     plants = plants,
                     onSelection = { plant ->
                         parent = plant
@@ -285,61 +271,21 @@ fun AddPlantScreen(navController: NavHostController, viewModel: AddPlantViewMode
                     )
                     Button(
                         onClick = {
-                            deceasedDatePickerDialogState.show()
+                            viewModel.showDatePickerDialog(
+                                context,
+                                onSelection = { date ->
+                                    deceasedDate = date
+                                }
+                            )
                         },
                     ) {
                         Text(text = deceasedDate.toString())
                     }
                 }
-                MaterialDialog(
-                    dialogState = deceasedDatePickerDialogState,
-                    buttons = {
-                        positiveButton("Ok")
-                        negativeButton("Cancel")
-                    }
-                ) {
-                    datepicker { date ->
-                        deceasedDate = date
-                    }
-                }
             }
         }
     }
 }
-
-@Composable
-fun ParentPickerDialog(
-    plants: List<Plant>,
-    onSelection: (Plant) -> Unit,
-    dismiss: () -> Unit,
-) {
-    Dialog(onDismissRequest = dismiss) {
-        Box {
-            LazyColumn(
-                Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 30.dp, vertical = 40.dp)
-                    .background(shape = RoundedCornerShape(20.dp), color = Color.White)
-            ) {
-                for (plant in plants) {
-                    item {
-                        Text(
-                            modifier = Modifier
-                                .clickable {
-                                    onSelection(plant)
-                                    dismiss()
-                                }
-                                .fillMaxWidth()
-                                .padding(10.dp),
-                            text = "${plant.nickname}"
-                        )
-                    }
-                }
-            }
-        }
-    }
-}
-
 
 @Preview(showBackground = true)
 @Composable

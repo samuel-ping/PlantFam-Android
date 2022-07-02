@@ -86,12 +86,14 @@ fun PlantDetailsScreen(
                     }
                 }
 
-                Text(nickname ?: "")
-                Text(commonName ?: "")
-                Text(scientificName ?: "")
-                Text(adoptionDate.toString())
-                Text(adoptedFrom ?: "")
-                Text(parent?.nickname ?: "")
+                Text("Nickname: ${nickname ?: "none"}")
+                Text("Common name: ${commonName ?: "none"}")
+                Text("Scientific name: ${scientificName ?: "unknown"}")
+                Text("Adoption date: $adoptionDate")
+                Text("Adoption location: ${adoptedFrom ?: "unknown"}")
+                Text("Parent: ${parent?.nickname ?: "unknown"}")
+                Text("Deceased?: $isDeceased")
+                if(isDeceased == true) Text("Date of expiration: $deceasedDate")
             }
         }
     }

@@ -1,10 +1,12 @@
 package com.plantfam.plantfam.ui.screens.addplantscreen
 
 import android.annotation.SuppressLint
+import android.app.DatePickerDialog
 import android.content.Context
 import android.graphics.Bitmap
 import android.net.Uri
 import android.util.Log
+import android.widget.DatePicker
 import androidx.annotation.MainThread
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -40,6 +42,8 @@ import java.io.File
 import java.io.InputStream
 import java.nio.file.Files
 import java.nio.file.Paths
+import java.time.LocalDate
+import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
@@ -88,7 +92,7 @@ class AddPlantViewModel @Inject constructor(
      * Compresses cover photo image, then adds the plant to Realm (minus the coverPhoto field).
      */
     fun addPlant(plant: Plant) {
-        if(!plant.coverPhoto.isNullOrBlank()) {
+        if (!plant.coverPhoto.isNullOrBlank()) {
             val coverPhotoUri = Uri.parse(plant.coverPhoto)
             val coverPhotoPath: String? = coverPhotoUri.path
             val coverPhotoFileName = DocumentFile.fromSingleUri(
@@ -111,7 +115,9 @@ class AddPlantViewModel @Inject constructor(
         }
 
         realm.executeTransactionAsync {
-            if(plant.parent != null) {
+            // must get parent realm object, or else get an error because realm thinks you're creating
+            // a new plant object that already exists.
+            if (plant.parent != null) {
                 val plantRealmObject = it.where(Plant::class.java)
                     .equalTo("id", plant.parent!!.id)
                     .findFirst()
@@ -166,6 +172,23 @@ class AddPlantViewModel @Inject constructor(
             },
             { Log.e(TAG(), "Cover photo upload failed: ", it.cause) }
         )
+    }
+
+    fun showDatePickerDialog(
+        context: Context,
+        onSelection: (LocalDate) -> Unit,
+    ) {
+        val today = LocalDate.now()
+
+        with(today) {
+            DatePickerDialog(
+                context,
+                { _: DatePicker, year: Int, month: Int, day: Int ->
+                    onSelection(LocalDate.of(year, month + 1, day))
+                }, year, monthValue - 1, dayOfMonth
+            ).show()
+        }
+
     }
 
     override fun onCleared() {
